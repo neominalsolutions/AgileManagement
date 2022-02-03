@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileManagement.Infrastruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileMagament.Persistence", "AgileMagament.Persistence\AgileMagament.Persistence.csproj", "{7DB5E96F-51A9-4065-8B40-3D8CC8A6309E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "application", "application", "{01B8C2E3-4FC6-4FFB-BA64-1B28AE0AD44E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileManagement.Application.Test", "AgileManagement.Application.Test\AgileManagement.Application.Test.csproj", "{0A67AA79-6766-43F9-B182-89EE7DE58491}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,10 @@ Global
 		{7DB5E96F-51A9-4065-8B40-3D8CC8A6309E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DB5E96F-51A9-4065-8B40-3D8CC8A6309E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DB5E96F-51A9-4065-8B40-3D8CC8A6309E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A67AA79-6766-43F9-B182-89EE7DE58491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A67AA79-6766-43F9-B182-89EE7DE58491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A67AA79-6766-43F9-B182-89EE7DE58491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A67AA79-6766-43F9-B182-89EE7DE58491}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +92,8 @@ Global
 		{811F2F70-31D3-4AEB-8C54-DC7CBDB26214} = {430AF6BB-03F1-472F-AB35-0438B09BAA99}
 		{6AE9445D-831C-4EDE-89F1-B1167D991256} = {35FEA9D2-5100-41B1-8826-640DF08E34C3}
 		{7DB5E96F-51A9-4065-8B40-3D8CC8A6309E} = {798F6AA2-F144-4715-99C1-32612DA3D617}
+		{01B8C2E3-4FC6-4FFB-BA64-1B28AE0AD44E} = {1D4B87D7-6A4E-4355-BCD2-613B7D39D1D9}
+		{0A67AA79-6766-43F9-B182-89EE7DE58491} = {01B8C2E3-4FC6-4FFB-BA64-1B28AE0AD44E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {035F3971-C6BF-4129-B94C-F2989FFBE2A1}

@@ -8,7 +8,6 @@
     <Folder Include="presentation\" />
     <Folder Include="session\" />
     <Folder Include="storage\" />
-    <Folder Include="validation\" />
   </ItemGroup>
 
 </Project>

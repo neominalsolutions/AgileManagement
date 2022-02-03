@@ -11,7 +11,7 @@ namespace AgileManagement.Core
     /// Abstract class olan Entityden kalıtım alan birşeye ancak Repository uygulanabilir.
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IRepository<TEntity> where TEntity:Entity
+    public interface IRepository<TEntity> where TEntity:Entity, new()
     {
         void Add(TEntity entity);
         void Remove(string Id);

@@ -1,6 +1,6 @@
 ﻿using AgileManagement.Core;
 using AgileManagement.Core.domain;
-using AgileManagement.Domain.events;
+using AgileManagement.Domain;
 using AgileManagement.Domain.repositories;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace AgileManagement.Domain
         {            
             var result = new ApplicationUserResult() { IsSucceeded = true };
 
-
+            // email unique mi
             var emailExists = _applicationUserRepository.GetQuery().FirstOrDefault(x => x.Email == email) == null ? false:true;
 
             if (emailExists)
@@ -34,7 +34,8 @@ namespace AgileManagement.Domain
             } 
             else
             {
-                var user = new ApplicationUser("", email);
+                var user = new ApplicationUser(email);
+                // parolayı hashledik
                 var hashedPassword = _passwordHasher.HashPassword(password);
                 user.SetPasswordHash(hashedPassword);
 

@@ -8,6 +8,10 @@ namespace AgileManagement.Core.domain
 {
 
 
+    /// <summary>
+    /// Uygulama içerisindeki Entity logiclerini DomainService ile yöneteceğiz.
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
     public interface IDomainService<TEntity> where TEntity:Entity
     {
       

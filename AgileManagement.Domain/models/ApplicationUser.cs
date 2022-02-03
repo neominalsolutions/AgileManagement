@@ -49,11 +49,11 @@ namespace AgileManagement.Domain
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="email"></param>
-        public ApplicationUser(string userName, string email)
+        public ApplicationUser(string email)
         {
             Id = Guid.NewGuid().ToString();
             SetEmail(email);
-            SetUserName(userName);
+            SetUserName(email);
         }
 
         /// <summary>

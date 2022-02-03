@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AgileManagement.Application\AgileManagement.Application.csproj" />
     <ProjectReference Include="..\AgileManagement.Core\AgileManagement.Core.csproj" />
   </ItemGroup>
 

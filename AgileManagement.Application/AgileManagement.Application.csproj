@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AgileManagement.Core\AgileManagement.Core.csproj" />
+    <ProjectReference Include="..\AgileManagement.Domain\AgileManagement.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

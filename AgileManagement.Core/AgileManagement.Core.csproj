@@ -4,4 +4,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="presentation\" />
+    <Folder Include="session\" />
+    <Folder Include="storage\" />
+    <Folder Include="validation\" />
+  </ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Domain.models
+namespace AgileManagement.Domain
 {
     public class ApplicationUser:Entity
     {

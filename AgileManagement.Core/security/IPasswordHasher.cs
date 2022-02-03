@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Domain
+namespace AgileManagement.Core
 {
-    class Project
+    public interface IPasswordHasher
     {
+        string HashPassword(string password);
     }
 }

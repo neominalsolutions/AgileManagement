@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Domain
+namespace AgileManagement.Core.domain
 {
-    class Project
+
+
+    public interface IDomainService<TEntity> where TEntity:Entity
     {
+      
     }
 }

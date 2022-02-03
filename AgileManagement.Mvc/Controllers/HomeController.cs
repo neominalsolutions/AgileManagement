@@ -1,4 +1,5 @@
-﻿using AgileManagement.Mvc.Models;
+﻿using AgileManagement.Core;
+using AgileManagement.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +13,7 @@ namespace AgileManagement.Mvc.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+  
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;

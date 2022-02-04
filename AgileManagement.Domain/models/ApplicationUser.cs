@@ -49,6 +49,11 @@ namespace AgileManagement.Domain
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="email"></param>
+        /// 
+
+        public bool EmailVerified { get; private set; }
+
+
         public ApplicationUser(string email)
         {
             Id = Guid.NewGuid().ToString();
@@ -134,6 +139,11 @@ namespace AgileManagement.Domain
             }
 
             this.ProfilePictureUrl = profilePictureUrl.Trim();
+        }
+
+        public void SetVerifyEmail()
+        {
+            EmailVerified = true;
         }
 
 

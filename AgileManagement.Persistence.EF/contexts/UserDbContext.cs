@@ -30,8 +30,7 @@ namespace AgileManagement.Persistence.EF
     {
         public UserDbContext(DbContextOptions<UserDbContext> dbContextOptions):base(dbContextOptions)
         {
-            var context = new UserDbContext();
-            context.Users.FromSqlRaw
+ 
         }
 
         public DbSet<ApplicationUser> Users { get; set; }

@@ -12,10 +12,10 @@ namespace AgileManagement.Domain
 {
     public class UserDomainService : IUserDomainService
     {
-        private readonly IApplicationUserRepository _applicationUserRepository;
+        private readonly IUserRepository _applicationUserRepository;
         private readonly IPasswordHasher _passwordHasher;
 
-        public UserDomainService(IApplicationUserRepository applicationUserRepository, IPasswordHasher passwordHasher)
+        public UserDomainService(IUserRepository applicationUserRepository, IPasswordHasher passwordHasher)
         {
             _applicationUserRepository = applicationUserRepository;
             _passwordHasher = passwordHasher;

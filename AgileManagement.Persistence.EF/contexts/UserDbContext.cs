@@ -1,5 +1,4 @@
 ﻿using AgileManagement.Domain;
-using AgileManagement.Persistence.EF.configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
@@ -31,7 +30,8 @@ namespace AgileManagement.Persistence.EF
     {
         public UserDbContext(DbContextOptions<UserDbContext> dbContextOptions):base(dbContextOptions)
         {
-
+            var context = new UserDbContext();
+            context.Users.FromSqlRaw
         }
 
         public DbSet<ApplicationUser> Users { get; set; }

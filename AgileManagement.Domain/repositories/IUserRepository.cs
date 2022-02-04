@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgileManagement.Domain.repositories
 {
-    public  interface IApplicationUserRepository:IRepository<ApplicationUser>
+    public  interface IUserRepository:IRepository<ApplicationUser>
     {
 
     }

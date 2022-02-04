@@ -1,4 +1,4 @@
-﻿using AgileManagement.Application.dtos.user;
+﻿using AgileManagement.Application;
 using AgileManagement.Core.validation;
 using AgileManagement.Domain;
 using System;

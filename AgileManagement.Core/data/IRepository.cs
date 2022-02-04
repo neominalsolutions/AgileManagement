@@ -1,4 +1,4 @@
-﻿using NBuyFirstGroup.Core.domain;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace AgileManagement.Core
     /// Abstract class olan Entityden kalıtım alan birşeye ancak Repository uygulanabilir.
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IRepository<TEntity> where TEntity:Entity, new()
+    public interface IRepository<TEntity> where TEntity:Entity
     {
         void Add(TEntity entity);
         void Remove(string Id);

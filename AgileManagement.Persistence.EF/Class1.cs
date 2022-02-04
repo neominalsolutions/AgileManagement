@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AgileMagament.Persistence
+namespace AgileManagement.Persistence.EF
 {
     public class Class1
     {

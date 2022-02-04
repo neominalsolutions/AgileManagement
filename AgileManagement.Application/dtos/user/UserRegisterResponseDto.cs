@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgileManagement.Application
 {
-    public class UserCreateResponseDto
+    public class UserRegisterResponseDto
     {
         public string Message { get; set; }
 

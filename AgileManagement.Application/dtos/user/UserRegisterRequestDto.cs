@@ -10,7 +10,7 @@ namespace AgileManagement.Application
     /// <summary>
     /// Hesap açılışı için gerekli olan alanlar
     /// </summary>
-    public class UserCreateRequestDto
+    public class UserRegisterRequestDto
     {
 
         public string Email { get; set; }

@@ -9,23 +9,23 @@ namespace AgileManagement.Mvc.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserCreateService _userCreateService;
+        private readonly IUserRegisterService _userRegisterService;
 
-        public AccountController(IUserCreateService userCreateService)
+        public AccountController(IUserRegisterService userRegisterService)
         {
-            _userCreateService = userCreateService;
+            _userRegisterService = userRegisterService;
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(UserCreateRequestDto model)
+        public IActionResult Register(UserRegisterRequestDto model)
         {
-            var response = _userCreateService.OnProcess(model);
+            var response = _userRegisterService.OnProcess(model);
             ViewBag.Message = response.Message;
 
             return View();

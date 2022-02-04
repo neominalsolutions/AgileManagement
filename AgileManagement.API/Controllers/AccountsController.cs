@@ -15,17 +15,17 @@ namespace AgileManagement.API.Controllers
         /// <summary>
         /// IUserCreateService use-case yani kullanıcı isteğidir.
         /// </summary>
-        private readonly IUserCreateService _userCreateService;
+        private readonly IUserRegisterService _userRegisterService;
 
-        public AccountsController(IUserCreateService userCreateService)
+        public AccountsController(IUserRegisterService userRegisterService)
         {
-            _userCreateService = userCreateService;
+            _userRegisterService = userRegisterService;
         }
 
         [HttpPost("create")]
-        public IActionResult Create([FromBody] UserCreateRequestDto model)
+        public IActionResult Create([FromBody] UserRegisterRequestDto model)
         {
-            var response = _userCreateService.OnProcess(model);
+            var response = _userRegisterService.OnProcess(model);
 
             return Ok(response);
         }

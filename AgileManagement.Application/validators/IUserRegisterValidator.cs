@@ -11,7 +11,7 @@ namespace AgileManagement.Application
     /// <summary>
     /// UserCreateRequestDto validate edebilecek IValidator tan implemente olan bir interface tanımladık
     /// </summary>
-    public interface IUserCreateValidator : IValidator<UserCreateRequestDto>
+    public interface IUserRegisterValidator : IValidator<UserRegisterRequestDto>
     {
        
     }

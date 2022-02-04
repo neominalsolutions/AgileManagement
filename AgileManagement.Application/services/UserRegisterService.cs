@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace AgileManagement.Application
 {
-    public class UserCreateService : IUserCreateService
+    public class UserRegisterService : IUserRegisterService
     {
         private IUserDomainService _userManager;
-        private IUserCreateValidator _validator;
+        private IUserRegisterValidator _validator;
 
-        public UserCreateService(IUserDomainService userManager, IUserCreateValidator validator)
+        public UserRegisterService(IUserDomainService userManager, IUserRegisterValidator validator)
         {
             _userManager = userManager;
             _validator = validator;
         }
 
-        public UserCreateResponseDto OnProcess(UserCreateRequestDto request)
+        public UserRegisterResponseDto OnProcess(UserRegisterRequestDto request)
         {
-            var response = new UserCreateResponseDto();
+            var response = new UserRegisterResponseDto();
             var validResult = _validator.IsValid(request);
 
        

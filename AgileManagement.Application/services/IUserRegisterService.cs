@@ -11,7 +11,7 @@ namespace AgileManagement.Application
     /// <summary>
     /// Bu servis ile uygulama gelen user create istediğini koordine ediceğiz.
     /// </summary>
-    public interface IUserCreateService: IApplicationService<UserCreateRequestDto,UserCreateResponseDto>
+    public interface IUserRegisterService: IApplicationService<UserRegisterRequestDto,UserRegisterResponseDto>
     {
 
     }

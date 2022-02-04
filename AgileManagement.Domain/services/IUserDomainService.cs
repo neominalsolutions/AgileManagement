@@ -18,7 +18,7 @@ namespace AgileManagement.Domain
         /// <summary>
         /// User ile alakalı operasyonlar esnasında bir hata geldğinde buradaki Hata Mesajlarını son kullanıcıya göstereceğiz.
         /// </summary>
-        public List<string> Errors { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
 
     }
 

@@ -30,5 +30,7 @@ namespace AgileManagement.Core
         /// <param name="query"></param>
         /// <returns></returns>
         IQueryable GetSqlRawQuery(string query);
+
+        void Save();
     }
 }

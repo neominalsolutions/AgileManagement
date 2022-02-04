@@ -1,4 +1,5 @@
 ﻿using AgileManagement.Application;
+using AgileManagement.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,9 +24,15 @@ namespace AgileManagement.Mvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(UserRegisterRequestDto model)
+        public IActionResult Register(RegisterInputModel model)
         {
-            var response = _userRegisterService.OnProcess(model);
+            var dto = new UserRegisterRequestDto
+            {
+                Email = model.Email,
+                Password = model.Password
+            };
+
+            var response = _userRegisterService.OnProcess(dto);
             ViewBag.Message = response.Message;
 
             return View();

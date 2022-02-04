@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AgileManagement.Application\AgileManagement.Application.csproj" />
     <ProjectReference Include="..\AgileManagement.Core\AgileManagement.Core.csproj" />
+    <ProjectReference Include="..\AgileManagement.Infrastructure\AgileManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\AgileManagement.Persistence.EF\AgileManagement.Persistence.EF.csproj" />
   </ItemGroup>
 
 </Project>

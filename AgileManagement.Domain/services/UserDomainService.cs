@@ -12,12 +12,12 @@ namespace AgileManagement.Domain
 {
     public class UserDomainService : IUserDomainService
     {
-        private readonly IUserRepository _applicationUserRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
 
-        public UserDomainService(IUserRepository applicationUserRepository, IPasswordHasher passwordHasher)
+        public UserDomainService(IUserRepository userRepository, IPasswordHasher passwordHasher)
         {
-            _applicationUserRepository = applicationUserRepository;
+            _userRepository = userRepository;
             _passwordHasher = passwordHasher;
         }
 
@@ -26,7 +26,7 @@ namespace AgileManagement.Domain
             var result = new ApplicationUserResult() { IsSucceeded = true };
 
             // email unique mi
-            var emailExists = _applicationUserRepository.GetQuery().FirstOrDefault(x => x.Email == email) == null ? false:true;
+            var emailExists = _userRepository.GetQuery().FirstOrDefault(x => x.Email == email) == null ? false:true;
 
             if (emailExists)
             {
@@ -39,8 +39,10 @@ namespace AgileManagement.Domain
                 var hashedPassword = _passwordHasher.HashPassword(password);
                 user.SetPasswordHash(hashedPassword);
 
-                _applicationUserRepository.Add(user);
-                var dbUser = _applicationUserRepository.Find(user.Id);
+                _userRepository.Add(user);
+                _userRepository.Save();
+                var dbUser = _userRepository.Find(user.Id);
+
 
             
                 if (dbUser == null)
@@ -50,7 +52,7 @@ namespace AgileManagement.Domain
                 else
                 {
                     // kullanıcı kaydı oluştu
-                    DomainEvent.Raise(new UserCreatedEvent(user));
+                    //DomainEvent.Raise(new UserCreatedEvent(user));
                 }
             }
 

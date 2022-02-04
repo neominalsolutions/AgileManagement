@@ -1,6 +1,17 @@
+using AgileManagement.Application;
+using AgileManagement.Application.validators;
+using AgileManagement.Core;
+using AgileManagement.Core.data;
+using AgileManagement.Core.validation;
+using AgileManagement.Domain;
+using AgileManagement.Domain.repositories;
+using AgileManagement.Infrastructure.notification.smtp;
+using AgileManagement.Infrastructure.security.hash;
+using AgileManagement.Persistence.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +35,17 @@ namespace AgileManagement.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IEmailService, NetSmtpEmailService>();
+            services.AddTransient<IUserRegisterValidator, UserRegisterValidator>();
+            services.AddSingleton<IPasswordHasher, CustomPasswordHashService>();
+            services.AddScoped<IUserRegisterService, UserRegisterService>();
+            services.AddScoped<IUserDomainService, UserDomainService>();
+            services.AddScoped<IUserRepository, EFUserRepository>();
+            // best practice olarak db context uygyulamasý appsettings dosyasýndan bilgileri conectionstrings node dan alýrýz.
+            services.AddDbContext<UserDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

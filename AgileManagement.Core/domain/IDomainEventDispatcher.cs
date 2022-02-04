@@ -10,8 +10,8 @@ namespace AgileManagement.Core
     /// Bu sınıf bir event raise olduktan sonra eventin ilgili handler'a sevk edilmesinden sorumlu olan ara bir yapı görevi görür. Böylece event üzerinden taşınan bilgileri bağımsız bir şekilde sisteme tanımlanmış olan Handler'a iletmekten sorumludur.
     /// </summary>
     /// <typeparam name="TEvent"></typeparam>
-    public interface IDomainEventDispatcher<TEvent> where TEvent:IDomainEvent
+    public interface IDomainEventDispatcher 
     {
-        void Dispatch(TEvent @event);
+        void Raise<TEvent>(TEvent @event) where TEvent : IDomainEvent;
     }
 }

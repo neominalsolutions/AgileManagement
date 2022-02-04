@@ -12,22 +12,6 @@ namespace AgileManagement.Core
     public abstract class Entity
     {
         public string Id { get; set; }
-        //public abstract void Raise(IDomainEvent @event);
     }
 
-    /// <summary>
-    /// Aşağıdaki kodlar eventin kullanım şeklidir.
-    /// </summary>
-    public class ProductCreated : IDomainEvent
-    {
-        public string Name { get; set; }
-    }
-
-    public class Product: Entity
-    {
-        public void IncreasePrice(double newPrice)
-        {
-            DomainEvent.Raise(new ProductCreated());
-        }
-    }
 }

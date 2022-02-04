@@ -5,6 +5,7 @@ using AgileManagement.Core.data;
 using AgileManagement.Core.validation;
 using AgileManagement.Domain;
 using AgileManagement.Domain.repositories;
+using AgileManagement.Infrastructure.events;
 using AgileManagement.Infrastructure.notification.smtp;
 using AgileManagement.Infrastructure.security.hash;
 using AgileManagement.Persistence.EF;
@@ -42,6 +43,15 @@ namespace AgileManagement.Mvc
             services.AddScoped<IUserDomainService, UserDomainService>();
             services.AddScoped<IUserRepository, EFUserRepository>();
             // best practice olarak db context uygyulamasý appsettings dosyasýndan bilgileri conectionstrings node dan alýrýz.
+
+
+            services.AddSingleton<IDomainEventHandler<UserCreatedEvent>, UserCreatedHandler>();
+            services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
+
+
+
+
+
             services.AddDbContext<UserDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("LocalDb"));

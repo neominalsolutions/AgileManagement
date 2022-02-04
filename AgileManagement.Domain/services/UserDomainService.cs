@@ -14,11 +14,13 @@ namespace AgileManagement.Domain
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-        public UserDomainService(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public UserDomainService(IUserRepository userRepository, IPasswordHasher passwordHasher, IDomainEventDispatcher domainEventDispatcher)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _domainEventDispatcher = domainEventDispatcher;
         }
 
         public ApplicationUserResult CreateUser(string email, string password)
@@ -43,8 +45,8 @@ namespace AgileManagement.Domain
                 _userRepository.Save();
                 var dbUser = _userRepository.Find(user.Id);
 
+                _domainEventDispatcher.Raise(new UserCreatedEvent(user));
 
-            
                 if (dbUser == null)
                 {
                     result.Errors.Add("Hesap oluşturulamadı");

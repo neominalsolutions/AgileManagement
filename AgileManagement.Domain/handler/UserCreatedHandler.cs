@@ -12,12 +12,13 @@ namespace AgileManagement.Domain
     /// </summary>
     public class UserCreatedHandler : IDomainEventHandler<UserCreatedEvent>
     {
-        private readonly ILogService _logService;
+        //private readonly ILogService _logService;
         private readonly IEmailService _emailService;
 
-        public UserCreatedHandler(ILogService logService, IEmailService emailService)
+        // ILogService logService,
+        public UserCreatedHandler( IEmailService emailService)
         {
-            _logService = logService;
+            //_logService = logService;
             _emailService = emailService;
         }
 
@@ -31,7 +32,7 @@ namespace AgileManagement.Domain
 
             string htmlString = $"<p>Hesabınızı aktive etmek için aşağıdaki linkte tıklayınız<a href={registerUri}>Aktive Et<a/></p>";
 
-            _logService.Log("User Account Successfully Created", LogLevels.Information);
+            //_logService.Log("User Account Successfully Created", LogLevels.Information);
 
             _emailService.SendSingleEmailAsync(to: @event.Args.Email, subject: "Hesap Aktivasyonu", htmlString);
 

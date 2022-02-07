@@ -36,6 +36,8 @@ namespace AgileManagement.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDataProtection(); // Uygulamada dataProtection özelliði kullanacaðým.
+
             // Mvc uygulamasýnda automapper kullanacaðýmýzý söyledik
             services.AddAutoMapper(typeof(Startup));
 
@@ -56,6 +58,7 @@ namespace AgileManagement.Mvc
             services.AddSingleton<IDomainEventHandler<UserCreatedEvent>, UserCreatedHandler>();
             services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
 
+   
 
 
 

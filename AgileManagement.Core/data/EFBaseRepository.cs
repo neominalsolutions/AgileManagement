@@ -26,7 +26,6 @@ namespace AgileManagement.Core
             _dbSet = _dbContext.Set<TEntity>();
         }
 
-        public object AppDbContext { get; private set; }
 
         public virtual void Add(TEntity entity)
         {

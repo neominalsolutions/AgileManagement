@@ -36,8 +36,16 @@ namespace AgileManagement.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            // Mvc uygulamasýnda automapper kullanacaðýmýzý söyledik
+            services.AddAutoMapper(typeof(Startup));
+
+            // konfigürasyon, yardýmcý servis gibi tek instance ile çalýþabilen yapýlar için singleton tercih edelim
             services.AddSingleton<IEmailService, NetSmtpEmailService>();
             services.AddTransient<IUserRegisterValidator, UserRegisterValidator>();
+            // validation, session iþlemleri için transient tercih edelim
+
+
+            // veri tabaný , servis çaðýrýsý, api çaðýrýsý gibi iþlemler için scoped tercih edelim
             services.AddSingleton<IPasswordHasher, CustomPasswordHashService>();
             services.AddScoped<IUserRegisterService, UserRegisterService>();
             services.AddScoped<IUserDomainService, UserDomainService>();

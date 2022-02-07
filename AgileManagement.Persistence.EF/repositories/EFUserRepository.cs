@@ -16,6 +16,12 @@ namespace AgileManagement.Persistence.EF
         {
         }
 
-      
+        public override void Add(ApplicationUser entity)
+        {
+            base.Add(entity);
+
+        }
+
+
     }
 }

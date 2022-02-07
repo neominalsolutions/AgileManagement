@@ -9,6 +9,8 @@ namespace AgileManagement.Application
     public class UserRegisterResponseDto
     {
         public string Message { get; set; }
+        public bool Success { get; set; }
+
 
     }
 }

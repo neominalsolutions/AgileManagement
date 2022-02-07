@@ -24,13 +24,13 @@ namespace AgileManagement.Application
         {
             var response = new UserRegisterResponseDto();
             var validResult = _validator.IsValid(request);
-
        
 
             if (validResult)
             {
-                var result = _userManager.CreateUser(request.Email, request.Password);
+                response.Success = true;
 
+                var result = _userManager.CreateUser(request.Email, request.Password);
 
                 if (result.IsSucceeded)
                 {
@@ -43,6 +43,7 @@ namespace AgileManagement.Application
             }
             else
             {
+                response.Success = false;
                 response.Message = string.Join(",", _validator.Errors);
             }
 

@@ -34,6 +34,15 @@ namespace AgileManagement.Mvc.Controllers
         /// </summary>
         /// <param name="verificationCode"></param>
         /// <returns></returns>
+        /// 
+        /*
+         * https://localhost:5001/account/confirm?verificationCode=CfDJ8IPdS1iyWX1DtUb2QtdSbGD03urFKBKId2pXH6Ll7kJAs--mqqpv7jcbuHX5BGs0iD4Xit0HGHL5-ePrWAk_vw3F-3M7pIF6ikSlwelgotND2KimTOJHIntAp8PSad64Eog-znlzIPZsu3UhnKeCJNAq45sklNwnU_Vo4sgqxKRk
+         */
+
+        /*
+         * 
+         * https://localhost:5001/account/confirm?verificationCode=CfDJ8IPdS1iyWX1DtUb2QtdSbGCnqLtg5tGpRMXkf8s3RFxHjMCfL-uGtBAh4CP7wFtEFS334zjQo8i7hnJd1B0Bq8Ak3ajK4-8kFZ-vJu10Np3n0QvI6tuS8yBaCggf6eJOQsHQpeGXbbF2S1HKcGxEKy59YFQHiQoE3ifPga8KvXsf
+         */
         public IActionResult Confirm(string verificationCode)
         {
             var userId = _dataProtector.Unprotect(verificationCode);
@@ -97,6 +106,12 @@ namespace AgileManagement.Mvc.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+
+        public IActionResult Login()
         {
             return View();
         }

@@ -24,12 +24,7 @@ namespace AgileManagement.Domain
 
     public interface IUserDomainService: IDomainService<ApplicationUser>
     {
-        /// <summary>
-        /// User Email uniqu olduğundan bulmamızı sağlayan servis
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        ApplicationUser FindUserByEmail(string email);
+        
 
         /// <summary>
         /// Sisteme yeni bir user kaydı açmamızı sağlayan servis

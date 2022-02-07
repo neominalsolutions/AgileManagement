@@ -60,8 +60,31 @@ namespace AgileManagement.Mvc
             services.AddSingleton<IDomainEventHandler<UserCreatedEvent>, UserCreatedHandler>();
             services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
 
-   
 
+            // NormalAuth bizim uygulamdaki normal kullanýcýlar için açtýðýmýz kimlik doðrulama þemasýdýr.
+            services.AddAuthentication("NormalScheme").AddCookie("NormalScheme",opt =>
+            {
+
+                opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
+                opt.Cookie.Name = "NormalCookie";
+                opt.LoginPath = "/Account/Login";
+                opt.LogoutPath = "/Account/Logout";
+                opt.AccessDeniedPath = "/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
+                opt.SlidingExpiration = true; // otomatik olarak cookie yenileme, süresini kaydýrarak expire time yeniden 30 gün sonrasýna atar.
+                // cookie expire olunca tekrar login olmamýz gerekiyor.
+
+            });
+
+            // Yönetim paneline giriþ yetkisi olan kullanýlar için olucak olan cookie
+            services.AddAuthentication("SecureScheme").AddCookie("SecureScheme",opt =>
+            {
+                opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
+                opt.Cookie.Name = "AdminCookie";
+                opt.ExpireTimeSpan = TimeSpan.FromDays(1); // 1 günlük olarak cookie browserdan silinmeyecek
+                opt.LoginPath = "/Admin/Accoun/Login";
+                opt.LogoutPath = "/Admin/Account/Logout";
+                opt.AccessDeniedPath = "/Admin/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
+            });
 
 
 
@@ -88,7 +111,8 @@ namespace AgileManagement.Mvc
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            // bunun yeri öenmli UseRouting ile UseAuthorization arasýna konumlandýralým.
+            app.UseAuthentication(); // sistemde kimlik doðrulamasý var kullanýcýnýn hesabýný cookie üzerinden kontrol ederiz.
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

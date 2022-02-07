@@ -9,6 +9,6 @@ namespace AgileManagement.Domain.repositories
 {
     public  interface IUserRepository:IRepository<ApplicationUser>
     {
-
+        ApplicationUser FindUserByEmail(string email);
     }
 }

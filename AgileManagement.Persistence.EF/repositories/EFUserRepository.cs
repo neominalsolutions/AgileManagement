@@ -22,6 +22,9 @@ namespace AgileManagement.Persistence.EF
 
         }
 
-
+        public ApplicationUser FindUserByEmail(string email)
+        {
+            return _dbSet.FirstOrDefault(x => x.Email == email);
+        }
     }
 }

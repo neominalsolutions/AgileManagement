@@ -1,16 +1,20 @@
 ﻿using AgileManagement.Application;
 using AgileManagement.Application.services;
+using AgileManagement.Core;
+using AgileManagement.Domain;
 using AgileManagement.Domain.conts;
 using AgileManagement.Domain.repositories;
 using AgileManagement.Mvc.Models;
 using AgileManagement.Mvc.Profiles;
 using AgileManagement.Persistence.EF;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AgileManagement.Mvc.Controllers
@@ -22,14 +26,17 @@ namespace AgileManagement.Mvc.Controllers
         private readonly IDataProtector _dataProtector;
         private readonly IUserRepository _userRepository;
         private readonly IAccountVerifyService _accountVerifyService;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public AccountController(IUserRegisterService userRegisterService, IMapper mapper, IDataProtectionProvider dataProtectionProvider, IUserRepository userRepository, IAccountVerifyService accountVerifyService)
+
+        public AccountController(IUserRegisterService userRegisterService, IMapper mapper, IDataProtectionProvider dataProtectionProvider, IUserRepository userRepository, IAccountVerifyService accountVerifyService, IPasswordHasher passwordHasher)
         {
             _userRegisterService = userRegisterService;
             _mapper = mapper;
             _dataProtector = dataProtectionProvider.CreateProtector(UserTokenNames.EmailVerification);
             _userRepository = userRepository;
             _accountVerifyService = accountVerifyService;
+            _passwordHasher = passwordHasher;
         }
 
         /// <summary>
@@ -53,7 +60,7 @@ namespace AgileManagement.Mvc.Controllers
 
             if (result)
                 return Redirect("/Account/Login");
-            
+
 
             //var user = _userRepository.Find(userId);
 
@@ -90,10 +97,10 @@ namespace AgileManagement.Mvc.Controllers
             //};
 
 
-           // birebir properytyler aynı isimdeyse direk eşleme gerçekleşir.
-           // eğer isim tutmaz ise o alan bış geçilir.
-           // ne girecek ne çıkacak diye _mapper.Map methoduna belirtip dto dönüştürüyoruz.
-           var dto = _mapper.Map<RegisterInputModel, UserRegisterRequestDto>(model);
+            // birebir properytyler aynı isimdeyse direk eşleme gerçekleşir.
+            // eğer isim tutmaz ise o alan bış geçilir.
+            // ne girecek ne çıkacak diye _mapper.Map methoduna belirtip dto dönüştürüyoruz.
+            var dto = _mapper.Map<RegisterInputModel, UserRegisterRequestDto>(model);
 
             var response = _userRegisterService.OnProcess(dto);
 
@@ -106,7 +113,7 @@ namespace AgileManagement.Mvc.Controllers
                     //   <div asp-validation-summary="All"></div> ile hata mesajları ekranda gösterilsin diye yaptık
                     ModelState.AddModelError($"{i}", errors[i]);
                 }
-               
+
             }
 
             ViewBag.Message = response.Message;
@@ -123,6 +130,70 @@ namespace AgileManagement.Mvc.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login([FromForm] LoginInputModel model)
+        {
+
+
+            var user = _userRepository.FindUserByEmail(model.Email);
+
+            if (ModelState.IsValid)
+            {
+                if (user == null)
+                {
+                    ViewBag.Message = "Kullanıcı hesabı bulunamadı";
+                    return View();
+                }
+                else
+                {
+                    var hashedPassword = _passwordHasher.HashPassword(model.Password);
+
+                    if (user.PasswordHash != hashedPassword)
+                    {
+                        ViewBag.Message = "Parola hatalı";
+                        return View();
+                    }
+
+                    if (!user.EmailVerified)
+                    {
+                        ViewBag.Message = "Hesap aktif değil!";
+                        return View();
+                    }
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.GivenName,$"{user.FirstName} {user.MiddleName}{user.LastName}"),
+                        new Claim(ClaimTypes.Email, user.Email)
+                    };
+
+
+                    var principle = new ClaimsPrincipal();
+                   
+                    var identity = new ClaimsIdentity(claims, "NormalScheme");
+                    principle.AddIdentity(identity);
+
+
+                    var properties = new AuthenticationProperties();
+                   
+                    properties.ExpiresUtc = DateTime.UtcNow.AddDays(30);
+                    properties.IsPersistent = model.RememberMe; // cookie kalıcı mı olsun session bazlı tarayıcı kapatınca cookie silinsin mi değeri
+
+                   HttpContext.SignInAsync("NormalScheme", principle, properties).GetAwaiter().GetResult();
+                    // burada cookie değeri oluşuyor.
+
+                    // awaitsiz olarak asenkron kod çalıştırma şekli
+
+                    return Redirect("/"); // anasayfaya döndür.
+
+
+                }
+            }
+
+            return View();
+
         }
     }
 }

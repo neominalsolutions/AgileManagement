@@ -65,10 +65,6 @@ namespace AgileManagement.Domain
             return result;
         }
 
-        public ApplicationUser FindUserByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
 
         public ApplicationUserResult UpdateProfile(string firstname, string lastname, string middlename, ApplicationUser user)
         {

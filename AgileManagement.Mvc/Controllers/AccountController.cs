@@ -1,4 +1,5 @@
 ﻿using AgileManagement.Application;
+using AgileManagement.Application.services;
 using AgileManagement.Domain.conts;
 using AgileManagement.Domain.repositories;
 using AgileManagement.Mvc.Models;
@@ -20,13 +21,15 @@ namespace AgileManagement.Mvc.Controllers
         private readonly IMapper _mapper; // IMapper interface ile ilgili servis ile haberleşiriz.
         private readonly IDataProtector _dataProtector;
         private readonly IUserRepository _userRepository;
+        private readonly IAccountVerifyService _accountVerifyService;
 
-        public AccountController(IUserRegisterService userRegisterService, IMapper mapper, IDataProtectionProvider dataProtectionProvider, IUserRepository userRepository)
+        public AccountController(IUserRegisterService userRegisterService, IMapper mapper, IDataProtectionProvider dataProtectionProvider, IUserRepository userRepository, IAccountVerifyService accountVerifyService)
         {
             _userRegisterService = userRegisterService;
             _mapper = mapper;
             _dataProtector = dataProtectionProvider.CreateProtector(UserTokenNames.EmailVerification);
             _userRepository = userRepository;
+            _accountVerifyService = accountVerifyService;
         }
 
         /// <summary>
@@ -46,17 +49,23 @@ namespace AgileManagement.Mvc.Controllers
         public IActionResult Confirm(string verificationCode)
         {
             var userId = _dataProtector.Unprotect(verificationCode);
-            var user = _userRepository.Find(userId);
+            var result = _accountVerifyService.OnProcess(userId);
 
-            
-            if(user != null)
-            {
-                 user.SetVerifyEmail();
-                _userRepository.Save();
-
-                //hesap aktivasyonu sonrası logine' yönlendir
+            if (result)
                 return Redirect("/Account/Login");
-            }
+            
+
+            //var user = _userRepository.Find(userId);
+
+
+            //if(user != null)
+            //{
+            //     user.SetVerifyEmail();
+            //    _userRepository.Save();
+
+            //    //hesap aktivasyonu sonrası logine' yönlendir
+            //    return Redirect("/Account/Login");
+            //}
 
             ViewBag.Message = "Hesabınız aktive edilemedi!";
             return View();

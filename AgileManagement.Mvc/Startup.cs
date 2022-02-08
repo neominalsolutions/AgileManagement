@@ -12,6 +12,7 @@ using AgileManagement.Infrastructure.security.hash;
 using AgileManagement.Persistence.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +37,8 @@ namespace AgileManagement.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+          
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpContextAccessor(); // IHttpContext Accessor
             services.AddDataProtection(); // Uygulamada dataProtection özelliði kullanacaðým.
 
@@ -64,30 +66,35 @@ namespace AgileManagement.Mvc
             services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
 
 
-            // NormalAuth bizim uygulamdaki normal kullanýcýlar için açtýðýmýz kimlik doðrulama þemasýdýr.
-            services.AddAuthentication("NormalScheme").AddCookie("NormalScheme",opt =>
-            {
+            //services.AddAuthentication("SecureScheme").AddCookie("SecureScheme", opt =>
+            //{
+            //    opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
+            //    opt.Cookie.Name = "AdminCookie";
+            //    opt.ExpireTimeSpan = TimeSpan.FromDays(1); // 1 günlük olarak cookie browserdan silinmeyecek
+            //    opt.LoginPath = "/Admin/Accoun/Login";
+            //    opt.LogoutPath = "/Admin/Account/Logout";
+            //    opt.AccessDeniedPath = "/Admin/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
+            //});
 
-                opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
+            // NormalAuth bizim uygulamdaki normal kullanýcýlar için açtýðýmýz kimlik doðrulama þemasýdýr.
+            services.AddAuthentication("NormalScheme").AddCookie("NormalScheme", opt =>
+             {
+
+                 opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
                 opt.Cookie.Name = "NormalCookie";
-                opt.LoginPath = "/Account/Login";
-                opt.LogoutPath = "/Account/Logout";
-                opt.AccessDeniedPath = "/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
+                 opt.LoginPath = "/Account/Login";
+                 opt.LogoutPath = "/Account/Logout";
+                 opt.AccessDeniedPath = "/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
                 opt.SlidingExpiration = true; // otomatik olarak cookie yenileme, süresini kaydýrarak expire time yeniden 30 gün sonrasýna atar.
-                // cookie expire olunca tekrar login olmamýz gerekiyor.
+                                              // cookie expire olunca tekrar login olmamýz gerekiyor.
 
             });
+
+
+          
 
             // Yönetim paneline giriþ yetkisi olan kullanýlar için olucak olan cookie
-            services.AddAuthentication("SecureScheme").AddCookie("SecureScheme",opt =>
-            {
-                opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
-                opt.Cookie.Name = "AdminCookie";
-                opt.ExpireTimeSpan = TimeSpan.FromDays(1); // 1 günlük olarak cookie browserdan silinmeyecek
-                opt.LoginPath = "/Admin/Accoun/Login";
-                opt.LogoutPath = "/Admin/Account/Logout";
-                opt.AccessDeniedPath = "/Admin/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
-            });
+
 
 
 

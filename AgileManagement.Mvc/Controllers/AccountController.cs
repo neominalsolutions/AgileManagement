@@ -129,6 +129,8 @@ namespace AgileManagement.Mvc.Controllers
 
         public IActionResult Login()
         {
+           //string email =   User.Claims.First(x => x.Type == ClaimTypes.Email).Value;
+
             return View();
         }
 
@@ -142,7 +144,11 @@ namespace AgileManagement.Mvc.Controllers
                 var result = _userLoginService.OnProcess(dto);
 
                 if (result.IsSucceeded)
+                {
+                 
                     return Redirect(result.ReturnUrl);
+                }
+                
                 else
                 {
                     ViewBag.Message = result.ErrorMessage;

@@ -1,4 +1,5 @@
 ﻿using AgileManagement.Application;
+using AgileManagement.Application.dtos.user;
 using AgileManagement.Application.services;
 using AgileManagement.Core;
 using AgileManagement.Domain;
@@ -24,19 +25,18 @@ namespace AgileManagement.Mvc.Controllers
         private readonly IUserRegisterService _userRegisterService;
         private readonly IMapper _mapper; // IMapper interface ile ilgili servis ile haberleşiriz.
         private readonly IDataProtector _dataProtector;
-        private readonly IUserRepository _userRepository;
         private readonly IAccountVerifyService _accountVerifyService;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IUserLoginService _userLoginService;
 
 
-        public AccountController(IUserRegisterService userRegisterService, IMapper mapper, IDataProtectionProvider dataProtectionProvider, IUserRepository userRepository, IAccountVerifyService accountVerifyService, IPasswordHasher passwordHasher)
+        public AccountController(IUserRegisterService userRegisterService, IMapper mapper, IDataProtectionProvider dataProtectionProvider, IAccountVerifyService accountVerifyService,IUserLoginService userLoginService)
         {
             _userRegisterService = userRegisterService;
             _mapper = mapper;
             _dataProtector = dataProtectionProvider.CreateProtector(UserTokenNames.EmailVerification);
-            _userRepository = userRepository;
+
             _accountVerifyService = accountVerifyService;
-            _passwordHasher = passwordHasher;
+            _userLoginService = userLoginService;
         }
 
         /// <summary>
@@ -135,64 +135,73 @@ namespace AgileManagement.Mvc.Controllers
         [HttpPost]
         public IActionResult Login([FromForm] LoginInputModel model)
         {
+            var dto = _mapper.Map<LoginInputModel, UserLoginRequestDto>(model);
 
+            var result = _userLoginService.OnProcess(dto);
 
-            var user = _userRepository.FindUserByEmail(model.Email);
-
-            if (ModelState.IsValid)
+            if (result.IsSucceeded)
+                return Redirect(result.ReturnUrl);
+            else
             {
-                if (user == null)
-                {
-                    ViewBag.Message = "Kullanıcı hesabı bulunamadı";
-                    return View();
-                }
-                else
-                {
-                    var hashedPassword = _passwordHasher.HashPassword(model.Password);
-
-                    if (user.PasswordHash != hashedPassword)
-                    {
-                        ViewBag.Message = "Parola hatalı";
-                        return View();
-                    }
-
-                    if (!user.EmailVerified)
-                    {
-                        ViewBag.Message = "Hesap aktif değil!";
-                        return View();
-                    }
-
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.GivenName,$"{user.FirstName} {user.MiddleName}{user.LastName}"),
-                        new Claim(ClaimTypes.Email, user.Email)
-                    };
-
-
-                    var principle = new ClaimsPrincipal();
-                   
-                    var identity = new ClaimsIdentity(claims, "NormalScheme");
-                    principle.AddIdentity(identity);
-
-
-                    var properties = new AuthenticationProperties();
-                   
-                    properties.ExpiresUtc = DateTime.UtcNow.AddDays(30);
-                    properties.IsPersistent = model.RememberMe; // cookie kalıcı mı olsun session bazlı tarayıcı kapatınca cookie silinsin mi değeri
-
-                   HttpContext.SignInAsync("NormalScheme", principle, properties).GetAwaiter().GetResult();
-                    // burada cookie değeri oluşuyor.
-
-                    // awaitsiz olarak asenkron kod çalıştırma şekli
-
-                    return Redirect("/"); // anasayfaya döndür.
-
-
-                }
+                ViewBag.Message = result.ErrorMessage;
+                return View();
             }
 
-            return View();
+            //var user = _userRepository.FindUserByEmail(model.Email);
+
+            //if (ModelState.IsValid)
+            //{
+            //    if (user == null)
+            //    {
+            //        ViewBag.Message = "Kullanıcı hesabı bulunamadı";
+            //        return View();
+            //    }
+            //    else
+            //    {
+            //        var hashedPassword = _passwordHasher.HashPassword(model.Password);
+
+            //        if (user.PasswordHash != hashedPassword)
+            //        {
+            //            ViewBag.Message = "Parola hatalı";
+            //            return View();
+            //        }
+
+            //        if (!user.EmailVerified)
+            //        {
+            //            ViewBag.Message = "Hesap aktif değil!";
+            //            return View();
+            //        }
+
+            //        var claims = new List<Claim>
+            //        {
+            //            new Claim(ClaimTypes.Name, user.UserName),
+            //            new Claim(ClaimTypes.GivenName,$"{user.FirstName} {user.MiddleName}{user.LastName}"),
+            //            new Claim(ClaimTypes.Email, user.Email)
+            //        };
+
+
+            //        var principle = new ClaimsPrincipal();
+
+            //        var identity = new ClaimsIdentity(claims, "NormalScheme");
+            //        principle.AddIdentity(identity);
+
+
+            //        var properties = new AuthenticationProperties();
+
+            //        properties.ExpiresUtc = DateTime.UtcNow.AddDays(30);
+            //        properties.IsPersistent = model.RememberMe; // cookie kalıcı mı olsun session bazlı tarayıcı kapatınca cookie silinsin mi değeri
+
+            //       HttpContext.SignInAsync("NormalScheme", principle, properties).GetAwaiter().GetResult();
+            //        // burada cookie değeri oluşuyor.
+
+
+
+            //        // awaitsiz olarak asenkron kod çalıştırma şekli
+
+            // return Redirect("/"); // anasayfaya döndür.
+        //  } }
+            //
+               
 
         }
     }

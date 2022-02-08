@@ -37,6 +37,7 @@ namespace AgileManagement.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor(); // IHttpContext Accessor
             services.AddDataProtection(); // Uygulamada dataProtection özelliði kullanacaðým.
 
             // Mvc uygulamasýnda automapper kullanacaðýmýzý söyledik
@@ -50,8 +51,10 @@ namespace AgileManagement.Mvc
 
             // veri tabaný , servis çaðýrýsý, api çaðýrýsý gibi iþlemler için scoped tercih edelim
             services.AddSingleton<IPasswordHasher, CustomPasswordHashService>();
+            services.AddScoped<ICookieAuthenticationService, CookieAuthenticationService>();
             services.AddScoped<IUserRegisterService, UserRegisterService>();
             services.AddScoped<IAccountVerifyService, AccountVerifyService>();
+            services.AddScoped<IUserLoginService, UserLoginService>();
             services.AddScoped<IUserDomainService, UserDomainService>();
             services.AddScoped<IUserRepository, EFUserRepository>();
             // best practice olarak db context uygyulamasý appsettings dosyasýndan bilgileri conectionstrings node dan alýrýz.

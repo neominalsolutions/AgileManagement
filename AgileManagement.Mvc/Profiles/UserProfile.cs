@@ -18,6 +18,8 @@ namespace AgileManagement.Mvc.Profiles
             CreateMap<RegisterInputModel, UserRegisterRequestDto>();
             // get işlemlerinde ise application dto viewmodel yani mvc nesnesine dönüşür.
             // profile consturcture içerisine user ile ilgili istedeiğimiz kadar create map açabiliriz.
+
+            CreateMap<LoginInputModel, UserRegisterRequestDto>();
         }
         
     }

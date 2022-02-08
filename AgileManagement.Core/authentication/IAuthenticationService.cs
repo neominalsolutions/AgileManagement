@@ -12,17 +12,9 @@ namespace AgileManagement.Core
     /// </summary>
     public interface IAuthenticationService
     {
-        Task<AuthenticationResult> AuthenticateAsync(string email, string password, bool persistance);
+        Task AuthenticateAsync(string email, string password, bool persistance, string scheme = null);
     }
 
-    /// <summary>
-    /// Kullanıcı eğer başarılı bir şekilde giriş yaptıysa IsAuthenticated true ve User bilgileri dönsün yoksa hata mesajını set edelim
-    /// </summary>
-    public class AuthenticationResult
-    {
-        public AuthenticatedUser User { get; set; }
-        public bool IsAuthenticated { get; set; }
-        public string ErrorMessage { get; set; } 
-
-    }
+ 
+ 
 }

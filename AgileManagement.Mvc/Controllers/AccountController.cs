@@ -135,17 +135,23 @@ namespace AgileManagement.Mvc.Controllers
         [HttpPost]
         public IActionResult Login([FromForm] LoginInputModel model)
         {
-            var dto = _mapper.Map<LoginInputModel, UserLoginRequestDto>(model);
-
-            var result = _userLoginService.OnProcess(dto);
-
-            if (result.IsSucceeded)
-                return Redirect(result.ReturnUrl);
-            else
+            if(ModelState.IsValid)
             {
-                ViewBag.Message = result.ErrorMessage;
-                return View();
+                var dto = _mapper.Map<LoginInputModel, UserLoginRequestDto>(model);
+
+                var result = _userLoginService.OnProcess(dto);
+
+                if (result.IsSucceeded)
+                    return Redirect(result.ReturnUrl);
+                else
+                {
+                    ViewBag.Message = result.ErrorMessage;
+                    return View();
+                }
             }
+
+            return View();
+            
 
             //var user = _userRepository.FindUserByEmail(model.Email);
 

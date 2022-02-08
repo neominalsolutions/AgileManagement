@@ -1,4 +1,5 @@
 ﻿using AgileManagement.Application;
+using AgileManagement.Application.dtos.user;
 using AgileManagement.Mvc.Models;
 using AutoMapper;
 using System;
@@ -19,7 +20,7 @@ namespace AgileManagement.Mvc.Profiles
             // get işlemlerinde ise application dto viewmodel yani mvc nesnesine dönüşür.
             // profile consturcture içerisine user ile ilgili istedeiğimiz kadar create map açabiliriz.
 
-            CreateMap<LoginInputModel, UserRegisterRequestDto>();
+            CreateMap<LoginInputModel, UserLoginRequestDto>();
         }
         
     }

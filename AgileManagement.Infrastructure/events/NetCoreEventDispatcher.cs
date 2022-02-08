@@ -17,15 +17,16 @@ namespace AgileManagement.Infrastructure.events
         public NetCoreEventDispatcher(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+           
         }
 
         public void Raise<TEvent>(TEvent @event) where TEvent : IDomainEvent
         {
 
             // Reflection ile çalışma zamanında hangi interfaceden türüyen servisin çalışacağını bulduk
-            var handler = _serviceProvider.GetService(typeof(IDomainEventHandler<TEvent>));
-            // UserCreatedHandler
-            ((dynamic)handler).Handle(@event);
+            //var handler = _serviceProvider.GetService(typeof(IDomainEventHandler<TEvent>));
+            //// UserCreatedHandler
+            //((dynamic)handler).Handle(@event);
         }
     }
 }

@@ -10,6 +10,7 @@ using AgileManagement.Mvc.Profiles;
 using AgileManagement.Persistence.EF;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -134,7 +135,7 @@ namespace AgileManagement.Mvc.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost][AllowAnonymous] // herkes istek atabilir.
         public IActionResult Login([FromForm] LoginInputModel model)
         {
             if(ModelState.IsValid)
@@ -215,6 +216,14 @@ namespace AgileManagement.Mvc.Controllers
             //
                
 
+        }
+
+        // Authenticated olan kullanıcı bu sayfaya erişebilir. Bu methodu tetişkleyebilir.
+        [Authorize]
+        public IActionResult LogOut()
+        {
+            HttpContext.SignOutAsync("NormalScheme");
+            return Redirect("/");
         }
     }
 }

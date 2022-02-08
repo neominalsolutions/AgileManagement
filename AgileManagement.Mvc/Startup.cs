@@ -2,14 +2,16 @@ using AgileManagement.Application;
 using AgileManagement.Application.services;
 using AgileManagement.Application.validators;
 using AgileManagement.Core;
-using AgileManagement.Core.data;
 using AgileManagement.Core.validation;
 using AgileManagement.Domain;
+using AgileManagement.Domain.events;
+using AgileManagement.Domain.handler;
 using AgileManagement.Domain.repositories;
 using AgileManagement.Infrastructure.events;
 using AgileManagement.Infrastructure.notification.smtp;
 using AgileManagement.Infrastructure.security.hash;
 using AgileManagement.Persistence.EF;
+using AgileManagement.Persistence.EF.repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +40,7 @@ namespace AgileManagement.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
           
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpContextAccessor(); // IHttpContext Accessor
             services.AddDataProtection(); // Uygulamada dataProtection özelliði kullanacaðým.
@@ -59,10 +62,13 @@ namespace AgileManagement.Mvc
             services.AddScoped<IUserLoginService, UserLoginService>();
             services.AddScoped<IUserDomainService, UserDomainService>();
             services.AddScoped<IUserRepository, EFUserRepository>();
+            services.AddScoped<IProjectRepository, EFProjectRepository>();
             // best practice olarak db context uygyulamasý appsettings dosyasýndan bilgileri conectionstrings node dan alýrýz.
 
 
-            services.AddSingleton<IDomainEventHandler<UserCreatedEvent>, UserCreatedHandler>();
+            services.AddScoped<IDomainEventHandler<UserCreatedEvent>, UserCreatedHandler>();
+            services.AddScoped<IDomainEventHandler<ContributorSendAccessRequestEvent>, ContributerSendAccessRequestHandler>();
+            services.AddScoped<IDomainEventHandler<ContributorRevokeAccessEvent>, ContributorRevokeAccessEventHandler>();
             services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
 
 
@@ -102,11 +108,19 @@ namespace AgileManagement.Mvc
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
             });
+
+            services.AddDbContext<AppDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

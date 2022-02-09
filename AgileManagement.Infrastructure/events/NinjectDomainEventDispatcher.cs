@@ -17,12 +17,14 @@ namespace AgileManagement.Infrastructure.events
             _kernel = kernel;
         }
 
-        public void Raise<TEvent>(TEvent @event) where TEvent : IDomainEvent
+        public void Dispatch<TDomainEvent>(TDomainEvent @event) where TDomainEvent : IDomainEvent
         {
-            foreach (var handler in _kernel.GetAll<IDomainEventHandler<TEvent>>())
+            foreach (var handler in _kernel.GetAll<IDomainEventHandler<TDomainEvent>>())
             {
                 handler.Handle(@event);
             }
         }
+
+        
     }
 }

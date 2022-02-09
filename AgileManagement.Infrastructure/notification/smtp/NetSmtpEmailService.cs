@@ -7,7 +7,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Infrastructure.notification.smtp
+namespace AgileManagement.Infrastructure
 {
     public class NetSmtpEmailService : IEmailService
     {

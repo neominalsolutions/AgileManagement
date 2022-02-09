@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Infrastructure.security.hash
+namespace AgileManagement.Infrastructure
 {
     public class CustomPasswordHashService : IPasswordHasher
     {

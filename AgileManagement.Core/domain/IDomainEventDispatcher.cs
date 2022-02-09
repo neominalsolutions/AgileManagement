@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace AgileManagement.Core
 {
-    /// <summary>
     /// Bu sınıf bir event raise olduktan sonra eventin ilgili handler'a sevk edilmesinden sorumlu olan ara bir yapı görevi görür. Böylece event üzerinden taşınan bilgileri bağımsız bir şekilde sisteme tanımlanmış olan Handler'a iletmekten sorumludur.
     /// </summary>
     /// <typeparam name="TEvent"></typeparam>
-    public interface IDomainEventDispatcher 
+    public interface IDomainEventDispatcher
     {
-        void Raise<TEvent>(TEvent @event) where TEvent : IDomainEvent;
+        void Dispatch<TDomainEvent>(TDomainEvent @event) where TDomainEvent:IDomainEvent;
     }
 }

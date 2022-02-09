@@ -1,5 +1,4 @@
 ﻿using AgileManagement.Core;
-using AgileManagement.Domain.events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +43,7 @@ namespace AgileManagement.Domain
         /// Projeye contributor ekleme işlemi olsun
         /// </summary>
         /// <param name="contributor"></param>
-        public void AddContributor(Contributor contributor, IDomainEventDispatcher domainEventDispatcher)
+        public void AddContributor(Contributor contributor)
         {
             // Projeye dahil etme isteğinde bulunduk
             // eğer kullanıcı mail adresinden isteği kabul et butonuna basarsa bu durumda projede contributor olarak görünebilecek ve projeye erişm izni olacak.
@@ -58,7 +57,7 @@ namespace AgileManagement.Domain
                 // aynı contributor eklenemez
                 // contibuter eklenirken contributor state waitingforrequest olarak ayalarnır.
                 contributors.Add(contributor);
-                //domainEventDispatcher.Raise(new ContributorSendAccessRequestEvent(this.Name, this.Id, contributor.UserId));
+                DomainEvent.Raise(new ContributorSendAccessRequestEvent(this.Name, this.Id, contributor.UserId));
             }
 
             
@@ -71,7 +70,7 @@ namespace AgileManagement.Domain
         public void RemoveContributor(Contributor contributor, IDomainEventDispatcher domainEventDispatcher)
         {
             contributors.Remove(contributor);
-            //domainEventDispatcher.Raise(new ContributorRevokeAccessEvent(this.Name,contributor.UserId));
+            DomainEvent.Raise(new ContributorRevokeAccessEvent(this.Name,contributor.UserId));
         }
 
     }

@@ -13,11 +13,15 @@ namespace AgileManagement.Core
     {
     
 
-        public static IDomainEventDispatcher _domainEventDispatcher { get; set; } 
+        public static IDomainEventDispatcher Dispatcher { get; set; } 
 
-        public static void Raise(IDomainEvent @event)
+       
+        public static void Raise<TDomainEvent>(TDomainEvent @event) where TDomainEvent : IDomainEvent
         {
-            _domainEventDispatcher.Raise(@event);
+
+            Dispatcher.Dispatch(@event);
+
+           
         }
     }
 }

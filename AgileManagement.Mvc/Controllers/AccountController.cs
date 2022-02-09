@@ -1,10 +1,7 @@
 ﻿using AgileManagement.Application;
-using AgileManagement.Application.dtos.user;
-using AgileManagement.Application.services;
 using AgileManagement.Core;
 using AgileManagement.Domain;
 using AgileManagement.Domain.conts;
-using AgileManagement.Domain.repositories;
 using AgileManagement.Mvc.Models;
 using AgileManagement.Mvc.Profiles;
 using AgileManagement.Persistence.EF;

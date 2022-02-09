@@ -1,7 +1,6 @@
 ﻿using AgileManagement.Core;
 using AgileManagement.Core.domain;
 using AgileManagement.Domain;
-using AgileManagement.Domain.repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

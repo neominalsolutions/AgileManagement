@@ -1,5 +1,4 @@
-﻿using AgileManagement.Application.dtos.user;
-using AgileManagement.Mvc.Models;
+﻿using AgileManagement.Mvc.Models;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using AgileManagement.Core;
-using AgileManagement.Domain.repositories;
+using AgileManagement.Domain;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Application.services
+namespace AgileManagement.Application
 {
     /// <summary>
     /// Cookie ile sisteme kimlik doğrulama yapacağımız servis.

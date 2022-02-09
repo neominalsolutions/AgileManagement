@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Application.dtos.user
+namespace AgileManagement.Application
 {
     public class UserLoginRequestDto
     {

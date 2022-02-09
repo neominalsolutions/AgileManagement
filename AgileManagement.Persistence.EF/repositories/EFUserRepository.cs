@@ -1,12 +1,7 @@
 ﻿using AgileManagement.Core;
 using AgileManagement.Domain;
-using AgileManagement.Domain.repositories;
-using AgileManagement.Persistence.EF.migrations.appuser;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AgileManagement.Persistence.EF
 {

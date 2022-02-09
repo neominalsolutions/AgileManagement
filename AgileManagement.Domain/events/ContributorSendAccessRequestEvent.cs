@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Domain.events
+namespace AgileManagement.Domain
 {
     public class ContributorSendAccessRequestEvent : IDomainEvent
     {

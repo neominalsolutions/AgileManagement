@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Domain.repositories
+namespace AgileManagement.Domain
 {
     public interface IProjectRepository:IRepository<Project>
     {

@@ -10,8 +10,8 @@ namespace AgileManagement.Core
     /// Bu interface event işleyici olarak çalışır.
     /// </summary>
     /// <typeparam name="TEvent"></typeparam>
-    public interface IDomainEventHandler<TEvent> where TEvent:IDomainEvent
+    public interface IDomainEventHandler<TDomainEvent> where TDomainEvent:IDomainEvent
     {
-        void Handle(TEvent @event);
+        void Handle(TDomainEvent @event);
     }
 }

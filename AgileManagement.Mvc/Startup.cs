@@ -1,17 +1,9 @@
 using AgileManagement.Application;
-using AgileManagement.Application.services;
-using AgileManagement.Application.validators;
 using AgileManagement.Core;
 using AgileManagement.Core.validation;
 using AgileManagement.Domain;
-using AgileManagement.Domain.events;
-using AgileManagement.Domain.handler;
-using AgileManagement.Domain.repositories;
-using AgileManagement.Infrastructure.events;
-using AgileManagement.Infrastructure.notification.smtp;
-using AgileManagement.Infrastructure.security.hash;
+using AgileManagement.Infrastructure;
 using AgileManagement.Persistence.EF;
-using AgileManagement.Persistence.EF.repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -41,9 +33,6 @@ namespace AgileManagement.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
            
-            
-          
-
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpContextAccessor(); // IHttpContext Accessor
             services.AddDataProtection(); // Uygulamada dataProtection özelliði kullanacaðým.
@@ -51,42 +40,12 @@ namespace AgileManagement.Mvc
             // Mvc uygulamasýnda automapper kullanacaðýmýzý söyledik
             services.AddAutoMapper(typeof(Startup));
 
-            // konfigürasyon, yardýmcý servis gibi tek instance ile çalýþabilen yapýlar için singleton tercih edelim
-            services.AddSingleton<IEmailService, NetSmtpEmailService>();
-            services.AddTransient<IUserRegisterValidator, UserRegisterValidator>();
-            // validation, session iþlemleri için transient tercih edelim
-           
+            DomainModule.Load(services);
+            InfrastructureModule.Load(services);
+            ApplicationModule.Load(services);
+            EFModule.Load(services,Configuration);
 
-            // veri tabaný , servis çaðýrýsý, api çaðýrýsý gibi iþlemler için scoped tercih edelim
-            services.AddSingleton<IPasswordHasher, CustomPasswordHashService>();
-            services.AddScoped<ICookieAuthenticationService, CookieAuthenticationService>();
-            services.AddScoped<IUserRegisterService, UserRegisterService>();
-            services.AddScoped<IAccountVerifyService, AccountVerifyService>();
-            services.AddScoped<IUserLoginService, UserLoginService>();
-            services.AddScoped<IUserDomainService, UserDomainService>();
-            services.AddScoped<IProjectWithContributorsRequestService, ProjectWithContributorsRequestService>();
-            services.AddScoped<IUserRepository, EFUserRepository>();
-            services.AddScoped<IProjectRepository, EFProjectRepository>();
-            // best practice olarak db context uygyulamasý appsettings dosyasýndan bilgileri conectionstrings node dan alýrýz.
 
-            services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
-            services.AddScoped<IDomainEventHandler<UserCreatedEvent>,UserCreatedHandler>();
-            services.AddScoped<IDomainEventHandler<ContributorSendAccessRequestEvent>, ContributerSendAccessRequestHandler>();
-            services.AddScoped<IDomainEventHandler<ContributorRevokeAccessEvent>, ContributorRevokeAccessEventHandler>();
-
-         
-
-            //services.AddAuthentication("SecureScheme").AddCookie("SecureScheme", opt =>
-            //{
-            //    opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
-            //    opt.Cookie.Name = "AdminCookie";
-            //    opt.ExpireTimeSpan = TimeSpan.FromDays(1); // 1 günlük olarak cookie browserdan silinmeyecek
-            //    opt.LoginPath = "/Admin/Accoun/Login";
-            //    opt.LogoutPath = "/Admin/Account/Logout";
-            //    opt.AccessDeniedPath = "/Admin/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
-            //});
-
-            // NormalAuth bizim uygulamdaki normal kullanýcýlar için açtýðýmýz kimlik doðrulama þemasýdýr.
             services.AddAuthentication("NormalScheme").AddCookie("NormalScheme", opt =>
              {
 
@@ -99,28 +58,6 @@ namespace AgileManagement.Mvc
                                               // cookie expire olunca tekrar login olmamýz gerekiyor.
 
             });
-
-
-          
-
-            // Yönetim paneline giriþ yetkisi olan kullanýlar için olucak olan cookie
-
-
-
-
-            services.AddDbContext<UserDbContext>(opt =>
-            {
-                opt.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
-            });
-
-            services.AddDbContext<AppDbContext>(opt =>
-            {
-                opt.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
-            });
-
-
-            //IKernel kernel = new StandardKernel();
-            //NinjectEventModule.RegisterServices(kernel);
 
         }
 

@@ -1,7 +1,5 @@
 ﻿using AgileManagement.Core;
 using AgileManagement.Domain;
-using AgileManagement.Domain.events;
-using AgileManagement.Domain.handler;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Infrastructure.events
+namespace AgileManagement.Infrastructure
 {
     public class NetCoreEventDispatcher : IDomainEventDispatcher
     {
@@ -23,15 +21,25 @@ namespace AgileManagement.Infrastructure.events
             _serviceProvider = serviceProvider;
         }
 
-        public void Raise<TEvent>(TEvent @event) where TEvent : IDomainEvent
-        {
 
-            foreach (var handler in _serviceProvider.GetServices(typeof(IDomainEventHandler<TEvent>)))
+        public void Dispatch<TDomainEvent>(TDomainEvent @event) where TDomainEvent : IDomainEvent
+        {
+            if (_serviceProvider != null)
             {
-                ((dynamic)handler).Handle(@event);
+
+                using (var scope = _serviceProvider.CreateScope())
+                {
+
+                    foreach (var handler in scope.ServiceProvider.GetServices<IDomainEventHandler<TDomainEvent>>())
+                    {
+
+                        handler.Handle(@event);
+                    }
+                }
             }
 
-       
         }
+
+
     }
 }

@@ -1,8 +1,6 @@
-﻿using AgileManagement.Application.dtos.user;
-using AgileManagement.Application.services;
+﻿using AgileManagement.Application;
 using AgileManagement.Core;
 using AgileManagement.Domain;
-using AgileManagement.Domain.repositories;
 using AgileManagement.Mvc.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -22,15 +20,13 @@ namespace AgileManagement.Mvc.Controllers
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IDomainEventDispatcher _domainEventDispatcher;
         private readonly IProjectWithContributorsRequestService _projectWithContributorsRequestService;
         private readonly IMapper _mapper;
 
-        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository, IDomainEventDispatcher domainEventDispatcher, IProjectWithContributorsRequestService projectWithContributorsRequestService, IMapper mapper)
+        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository,IProjectWithContributorsRequestService projectWithContributorsRequestService, IMapper mapper)
         {
             _projectRepository = projectRepository;
             _userRepository = userRepository;
-            _domainEventDispatcher = domainEventDispatcher;
             _projectWithContributorsRequestService = projectWithContributorsRequestService;
             _mapper = mapper;
         }
@@ -114,7 +110,7 @@ namespace AgileManagement.Mvc.Controllers
 
             foreach (var userId in model.UsersId)
             {
-                project.AddContributor(new Contributor(userId), _domainEventDispatcher);
+                project.AddContributor(new Contributor(userId));
             }
 
             _projectRepository.Save();

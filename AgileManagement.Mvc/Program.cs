@@ -19,8 +19,9 @@ namespace AgileManagement.Mvc
         public static void Main(string[] args)
         {
             IHost build = CreateHostBuilder(args).Build();
+            DomainEvent.Dispatcher = build.Services.GetRequiredService<IDomainEventDispatcher>();
             build.Run();
-           
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -28,6 +29,7 @@ namespace AgileManagement.Mvc
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+
                 });
     }
 }

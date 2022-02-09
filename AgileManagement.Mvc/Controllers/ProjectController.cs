@@ -4,6 +4,7 @@ using AgileManagement.Domain.repositories;
 using AgileManagement.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,18 @@ using System.Threading.Tasks;
 namespace AgileManagement.Mvc.Controllers
 {
 
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-        public ProjectController(IProjectRepository projectRepository, IDomainEventDispatcher domainEventDispatcher)
+        public ProjectController(IProjectRepository projectRepository, IDomainEventDispatcher domainEventDispatcher, IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
             _domainEventDispatcher = domainEventDispatcher;
+            _userRepository = userRepository;
         }
 
         public IActionResult Index()
@@ -41,6 +45,19 @@ namespace AgileManagement.Mvc.Controllers
             return View();
         }
 
+        public IActionResult List()
+        {
+            var projects = _projectRepository.GetQuery().Include(x => x.Contributers).Select(a => new ProjectListViewModel
+            {
+                ProjectId = a.Id,
+                Name = a.Name,
+                Description = a.Description,
+                //Contributors = _userRepository.GetQuery().Where(x => a.Contributers.Any(c => c.UserId == x.Id)).Select(x => x.Email).ToList()
+            }).ToList();
+
+            return View(projects);
+        }
+
         public IActionResult CreateProject()
         {
             return View();
@@ -56,12 +73,40 @@ namespace AgileManagement.Mvc.Controllers
                 _projectRepository.Add(project);
                 _projectRepository.Save();
 
+                ViewBag.Message = "Proje oluşturuldu";
+
                 return View();
             }
 
             // Proje oluşturma sayfası
             return View();
         }
+
+
+        [HttpGet]
+        public IActionResult AddContributorRequest(string projectId)
+        {
+            var project = _projectRepository.Find(projectId);
+
+            var projectContributerUsersId = _projectRepository.GetQuery().Include(x => x.Contributers).Where(x=> x.Id == projectId).SelectMany(x => x.Contributers).Select(x => x.UserId).ToList();
+
+            var users = _userRepository.GetQuery().Select(a=> new UserViewModel {
+            UserId = a.Id,
+            Email = a.Email
+            }).ToList();
+
+            var model = new ProjectAddContributorViewModel
+            {
+                Users = users,
+                Name = project.Name,
+                ProjectId = project.Id
+            };
+
+            return View(model);
+
+        }
+
+
 
         [HttpPost]
         public JsonResult AddContributorRequest([FromBody] ContributorInputModel model)

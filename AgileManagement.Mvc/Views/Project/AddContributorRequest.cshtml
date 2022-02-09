@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "AddContributorRequest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ProjectAddContributorViewModel
+
+<h1>AddContributorRequest</h1>
+
+<div class="container">
+
+    <div class="row">
+        <h1>@Model.Name</h1>
+        <div> Contributors </div>
+        <ul>
+            @foreach (var user in Model.Users)
+            {
+                <li>@user.Email  <button onclick="AddContributorRequest('@Model.ProjectId', '@user.UserId')">Add as Contributors</button> </li>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+
+        <table class="table table-responsive">
+            <tr id="#requestedContributors"></tr>
+
+            <tfoot>
+                <div>
+                    <button onclick="SaveContributors()">Save Contributors</button>
+                </div>
+            </tfoot>
+        </table>
+
+
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+<script>
+
+    function AddContributorRequest(projectId, userId) {
+
+        alert('AddContributorRequest' + projectId + '' + userId)
+
+        $('#requestedContributors').append(`<td>${userId} <button class="btn btn-close" onclick='RemoveContributor(${userId})'></button></td>`);
+    }
+
+    function SaveContributors() {
+
+    }
+
+</script>
+
+}
+
+
+
+
+

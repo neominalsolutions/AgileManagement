@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<ProjectListViewModel>
+
+<h1>List</h1>
+
+
+
+<table class="table table-responsive table-striped">
+    <tr>
+        <th>Project Name</th>
+        <th>Description</th>
+        <th>Contributors</th>
+        <th>Operations</th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Description</td>
+            <td>@string.Join(',', item.Contributors.ToArray())</td>
+            <td><a asp-controller="Project" asp-action="AddContributorRequest" asp-route-projectId="@item.ProjectId">Send Contributor Request</a></td>
+            }
+        </tr>
+    }
+    </table>

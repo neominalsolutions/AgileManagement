@@ -24,7 +24,6 @@ namespace AgileManagement.Domain
     public class Contributor:Entity
     {
         public string UserId { get; private set; }
-        public string Email { get; private set; }
         public int Status { get; private set; }
 
         /// <summary>

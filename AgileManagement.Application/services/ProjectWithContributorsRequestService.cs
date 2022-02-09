@@ -27,7 +27,7 @@ namespace AgileManagement.Application.services
 
             if (request != null && !string.IsNullOrEmpty(request.ProjectId))
             {
-                query.Where(x => x.Id == request.ProjectId);
+               query =  query.Where(x => x.Id == request.ProjectId);
             }
 
             var projects = query.Include(x => x.Contributers).Select(a => new ProjectDto
@@ -43,11 +43,11 @@ namespace AgileManagement.Application.services
             }).ToList();
 
 
-            projects.ForEach(a =>
+            projects.ForEach(project =>
             {
-                List<string> contributersUserId = a.Contributors.Select(x => x.UserId).ToList();
+                List<string> contributersUserId = project.Contributors.Select(x => x.UserId).ToList();
 
-                a.Contributors = _userRepository.GetQuery().Where(x => contributersUserId.Contains(x.Id)).Select(y => new ContributorDto
+                project.Contributors = _userRepository.GetQuery().Where(x => contributersUserId.Contains(x.Id)).Select(y => new ContributorDto
                 {
                     Email = y.Email,
                     UserName = y.UserName,

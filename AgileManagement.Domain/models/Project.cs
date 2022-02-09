@@ -58,7 +58,7 @@ namespace AgileManagement.Domain
                 // aynı contributor eklenemez
                 // contibuter eklenirken contributor state waitingforrequest olarak ayalarnır.
                 contributors.Add(contributor);
-                domainEventDispatcher.Raise(new ContributorSendAccessRequestEvent(this.Name, this.Id, contributor.UserId));
+                //domainEventDispatcher.Raise(new ContributorSendAccessRequestEvent(this.Name, this.Id, contributor.UserId));
             }
 
             
@@ -71,7 +71,7 @@ namespace AgileManagement.Domain
         public void RemoveContributor(Contributor contributor, IDomainEventDispatcher domainEventDispatcher)
         {
             contributors.Remove(contributor);
-            domainEventDispatcher.Raise(new ContributorRevokeAccessEvent(this.Name,contributor.UserId));
+            //domainEventDispatcher.Raise(new ContributorRevokeAccessEvent(this.Name,contributor.UserId));
         }
 
     }

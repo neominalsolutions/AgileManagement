@@ -64,14 +64,17 @@ namespace AgileManagement.Mvc
             services.AddScoped<IAccountVerifyService, AccountVerifyService>();
             services.AddScoped<IUserLoginService, UserLoginService>();
             services.AddScoped<IUserDomainService, UserDomainService>();
+            services.AddScoped<IProjectWithContributorsRequestService, ProjectWithContributorsRequestService>();
             services.AddScoped<IUserRepository, EFUserRepository>();
             services.AddScoped<IProjectRepository, EFProjectRepository>();
             // best practice olarak db context uygyulamasý appsettings dosyasýndan bilgileri conectionstrings node dan alýrýz.
 
+            services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
+            services.AddScoped<IDomainEventHandler<UserCreatedEvent>,UserCreatedHandler>();
+            services.AddScoped<IDomainEventHandler<ContributorSendAccessRequestEvent>, ContributerSendAccessRequestHandler>();
+            services.AddScoped<IDomainEventHandler<ContributorRevokeAccessEvent>, ContributorRevokeAccessEventHandler>();
 
-
-            //services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
-
+         
 
             //services.AddAuthentication("SecureScheme").AddCookie("SecureScheme", opt =>
             //{
@@ -116,8 +119,8 @@ namespace AgileManagement.Mvc
             });
 
 
-            IKernel kernel = new StandardKernel();
-            NinjectEventModule.RegisterServices(kernel);
+            //IKernel kernel = new StandardKernel();
+            //NinjectEventModule.RegisterServices(kernel);
 
         }
 

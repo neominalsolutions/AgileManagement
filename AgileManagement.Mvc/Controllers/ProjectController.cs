@@ -1,9 +1,13 @@
-﻿using AgileManagement.Core;
+﻿using AgileManagement.Application.dtos.user;
+using AgileManagement.Application.services;
+using AgileManagement.Core;
 using AgileManagement.Domain;
 using AgileManagement.Domain.repositories;
 using AgileManagement.Mvc.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,16 +17,22 @@ using System.Threading.Tasks;
 namespace AgileManagement.Mvc.Controllers
 {
 
-    [Authorize]
+
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
+        private readonly IProjectWithContributorsRequestService _projectWithContributorsRequestService;
+        private readonly IMapper _mapper;
 
-        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository)
+        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository, IDomainEventDispatcher domainEventDispatcher, IProjectWithContributorsRequestService projectWithContributorsRequestService, IMapper mapper)
         {
             _projectRepository = projectRepository;
             _userRepository = userRepository;
+            _domainEventDispatcher = domainEventDispatcher;
+            _projectWithContributorsRequestService = projectWithContributorsRequestService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -45,15 +55,10 @@ namespace AgileManagement.Mvc.Controllers
 
         public IActionResult List()
         {
-            var projects = _projectRepository.GetQuery().Include(x => x.Contributers).Select(a => new ProjectListViewModel
-            {
-                ProjectId = a.Id,
-                Name = a.Name,
-                Description = a.Description,
-                //Contributors = _userRepository.GetQuery().Where(x => a.Contributers.Any(c => c.UserId == x.Id)).Select(x => x.Email).ToList()
-            }).ToList();
 
-            return View(projects);
+            var response =  _projectWithContributorsRequestService.OnProcess();
+
+            return View(response.Projects);
         }
 
         public IActionResult CreateProject()
@@ -84,23 +89,19 @@ namespace AgileManagement.Mvc.Controllers
         [HttpGet]
         public IActionResult AddContributorRequest(string projectId)
         {
-            var project = _projectRepository.Find(projectId);
+            var response = _projectWithContributorsRequestService.OnProcess(new ProjectWithContributorRequestDto { ProjectId = projectId });
 
-            var projectContributerUsersId = _projectRepository.GetQuery().Include(x => x.Contributers).Where(x=> x.Id == projectId).SelectMany(x => x.Contributers).Select(x => x.UserId).ToList();
+            var projectContributorsId = response.Projects[0].Contributors.Select(x => x.UserId).ToList();
 
-            var users = _userRepository.GetQuery().Select(a=> new UserViewModel {
-            UserId = a.Id,
-            Email = a.Email
-            }).ToList();
-
-            var model = new ProjectAddContributorViewModel
+            // projeye tanımlanmış olan userların dropdownı
+            ViewBag.UsersWithNoContributors = _userRepository.GetQuery().Where(x => projectContributorsId.Contains(x.Id) == false).Select(a => new SelectListItem
             {
-                Users = users,
-                Name = project.Name,
-                ProjectId = project.Id
-            };
+                Text = a.Email,
+                Value = a.Id.ToString()
+            });
+         
 
-            return View(model);
+            return View(response.Projects[0]);
 
         }
 
@@ -113,7 +114,7 @@ namespace AgileManagement.Mvc.Controllers
 
             foreach (var userId in model.UsersId)
             {
-                //project.AddContributor(new Contributor(userId));
+                project.AddContributor(new Contributor(userId), _domainEventDispatcher);
             }
 
             _projectRepository.Save();

@@ -13,6 +13,6 @@ namespace AgileManagement.Core
     /// <typeparam name="TResponse">Uygulamadan çıkan sonuç yani son kullanıcıya dönecek olan result </typeparam>
    public interface IApplicationService<in TRequest, out TResponse>
     {
-        TResponse OnProcess(TRequest @request);
+        TResponse OnProcess(TRequest @request = default(TRequest));
     }
 }

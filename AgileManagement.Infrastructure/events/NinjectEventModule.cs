@@ -17,9 +17,9 @@ namespace AgileManagement.Infrastructure.events
         {
             
 
-            kernel.Bind<IDomainEventHandler<UserCreatedEvent>>().To<UserCreatedHandler>();
-            kernel.Bind<IDomainEventHandler<ContributorSendAccessRequestEvent>>().To<ContributerSendAccessRequestHandler>();
-            kernel.Bind<IDomainEventHandler<ContributorRevokeAccessEvent>>().To<ContributorRevokeAccessEventHandler>();
+            kernel.Bind<IDomainEventHandler<UserCreatedEvent>>().To<UserCreatedHandler>().InSingletonScope();
+            kernel.Bind<IDomainEventHandler<ContributorSendAccessRequestEvent>>().To<ContributerSendAccessRequestHandler>().InSingletonScope();
+            kernel.Bind<IDomainEventHandler<ContributorRevokeAccessEvent>>().To<ContributorRevokeAccessEventHandler>().InSingletonScope();
 
             DomainEvent._domainEventDispatcher = new NinjectDomainEventDispatcher(kernel);
 

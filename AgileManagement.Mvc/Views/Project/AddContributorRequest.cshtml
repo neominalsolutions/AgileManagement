@@ -4,57 +4,123 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model ProjectAddContributorViewModel
+@model AgileManagement.Application.dtos.user.ProjectDto
 
-<h1>AddContributorRequest</h1>
+<h1>Contributer Management</h1>
 
 <div class="container">
 
     <div class="row">
-        <h1>@Model.Name</h1>
-        <div> Contributors </div>
-        <ul>
-            @foreach (var user in Model.Users)
-            {
-                <li>@user.Email  <button onclick="AddContributorRequest('@Model.ProjectId', '@user.UserId')">Add as Contributors</button> </li>
-            }
-        </ul>
-    </div>
+        <div class="col-6">
+            <div class="card">
 
-    <div class="row">
-
-        <table class="table table-responsive">
-            <tr id="#requestedContributors"></tr>
-
-            <tfoot>
-                <div>
-                    <button onclick="SaveContributors()">Save Contributors</button>
+                <div class="card-body">
+                    <div class="card-title">@Model.Name</div>
+                    <ul class="list-group">
+                        @foreach (var contributor in Model.Contributors)
+                        {
+                            <li class="list-group-item">@contributor.Email </li>
+                        }
+                    </ul>
                 </div>
-            </tfoot>
-        </table>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">Other Users</div>
 
+                    <div class="input-group mb-3">
+                        <select id="userSelector" class="form-control" asp-items="@ViewBag.UsersWithNoContributors"></select>
+                        <button class="btn btn-sm btn-outline-dark" onclick="AddContributor()">(+) Add Contributor</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
 
 
     </div>
+
+
+
+
+    <div class="d-flex mt-3 justify-content-center">
+        <div class="col-8">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Email</td>
+                        <td>Option</td>
+                    </tr>
+
+                </thead>
+                <tbody id="contributorTable">
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                       
+                        <td colspan="2" style="text-align:center">
+                            <button class="btn btn-success" onclick="SendContributorRequest('@Model.ProjectId')">Send Contributor Request</button>
+                        </td>
+                    </tr>
+                  
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+
+
 
 </div>
 
 @section Scripts {
 
-<script>
+    <script>
 
-    function AddContributorRequest(projectId, userId) {
+        let contributors = [];
 
-        alert('AddContributorRequest' + projectId + '' + userId)
 
-        $('#requestedContributors').append(`<td>${userId} <button class="btn btn-close" onclick='RemoveContributor(${userId})'></button></td>`);
-    }
+        function AddContributor() {
 
-    function SaveContributors() {
+            const userId = $("#userSelector").val();
+            const email = $("#userSelector option:selected").text();
 
-    }
+            const contributor = {
+                userId,
+                email
+            };
 
-</script>
+            if (!contributors.find(x => x.email == email)) {
+
+                contributors = [contributor, ...contributors];
+
+                $('#contributorTable').append(`
+                    <tr id='user_${userId}'>
+                        <td>${email}</td>
+                        <td><button class='btn btn-danger' onclick='deleteContributor(${userId})'>Remove</button>
+                        </td>
+                    </tr>`);
+
+                console.log('contributors', contributors);
+
+            }
+        }
+
+
+        function SendContributorRequest(projectId) {
+
+            console.log('projectId', projectId);
+            console.log('contributors', contributors);
+
+
+        }
+
+
+    </script>
 
 }
 

@@ -24,6 +24,7 @@ namespace AgileManagement.Domain
     public class Contributor:Entity
     {
         public string UserId { get; private set; }
+        public string Email { get; private set; }
         public int Status { get; private set; }
 
         /// <summary>
@@ -38,6 +39,8 @@ namespace AgileManagement.Domain
             {
                 throw new Exception("UserId girilmedi!");
             }
+
+    
            
             UserId = userId; // projeye eklenen bir contributor default da waitingForRequesttir.
             this.Status = (int)ContributorStatus.WaitingForRequest;

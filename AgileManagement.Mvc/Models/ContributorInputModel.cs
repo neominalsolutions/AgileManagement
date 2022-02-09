@@ -7,7 +7,7 @@ namespace AgileManagement.Mvc.Models
 {
     public class ContributorInputModel
     {
-        public List<string> UsersId { get; set; }
+        public List<string> UsersId { get; set; } = new List<string>();
         public string ProjectId { get; set; }
 
     }

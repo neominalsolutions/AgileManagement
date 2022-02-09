@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model List<ProjectListViewModel>
+@model List<AgileManagement.Application.dtos.user.ProjectDto>
 
 <h1>List</h1>
 
@@ -24,9 +24,8 @@
         <tr>
             <td>@item.Name</td>
             <td>@item.Description</td>
-            <td>@string.Join(',', item.Contributors.ToArray())</td>
+            <td>@string.Join(',',item.Contributors.Select(a=> a.Email))</td>
             <td><a asp-controller="Project" asp-action="AddContributorRequest" asp-route-projectId="@item.ProjectId">Send Contributor Request</a></td>
-            }
         </tr>
     }
     </table>

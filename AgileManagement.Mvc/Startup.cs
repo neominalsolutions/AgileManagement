@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace AgileManagement.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           
+            
           
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -66,10 +69,8 @@ namespace AgileManagement.Mvc
             // best practice olarak db context uygyulamasý appsettings dosyasýndan bilgileri conectionstrings node dan alýrýz.
 
 
-            services.AddScoped<IDomainEventHandler<UserCreatedEvent>, UserCreatedHandler>();
-            services.AddScoped<IDomainEventHandler<ContributorSendAccessRequestEvent>, ContributerSendAccessRequestHandler>();
-            services.AddScoped<IDomainEventHandler<ContributorRevokeAccessEvent>, ContributorRevokeAccessEventHandler>();
-            services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
+
+            //services.AddSingleton<IDomainEventDispatcher, NetCoreEventDispatcher>();
 
 
             //services.AddAuthentication("SecureScheme").AddCookie("SecureScheme", opt =>
@@ -113,6 +114,10 @@ namespace AgileManagement.Mvc
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
             });
+
+
+            IKernel kernel = new StandardKernel();
+            NinjectEventModule.RegisterServices(kernel);
 
         }
 

@@ -1,4 +1,8 @@
 ﻿using AgileManagement.Core;
+using AgileManagement.Domain;
+using AgileManagement.Domain.events;
+using AgileManagement.Domain.handler;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +21,17 @@ namespace AgileManagement.Infrastructure.events
         public NetCoreEventDispatcher(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-           
         }
 
         public void Raise<TEvent>(TEvent @event) where TEvent : IDomainEvent
         {
 
-            // Reflection ile çalışma zamanında hangi interfaceden türüyen servisin çalışacağını bulduk
-            //var handler = _serviceProvider.GetService(typeof(IDomainEventHandler<TEvent>));
-            //// UserCreatedHandler
-            //((dynamic)handler).Handle(@event);
+            foreach (var handler in _serviceProvider.GetServices(typeof(IDomainEventHandler<TEvent>)))
+            {
+                ((dynamic)handler).Handle(@event);
+            }
+
+       
         }
     }
 }

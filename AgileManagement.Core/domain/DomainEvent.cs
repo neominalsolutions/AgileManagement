@@ -11,6 +11,8 @@ namespace AgileManagement.Core
     /// </summary>
     public static class DomainEvent
     {
+    
+
         public static IDomainEventDispatcher _domainEventDispatcher { get; set; } 
 
         public static void Raise(IDomainEvent @event)

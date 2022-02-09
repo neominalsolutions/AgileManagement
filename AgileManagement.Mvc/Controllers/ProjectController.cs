@@ -18,12 +18,10 @@ namespace AgileManagement.Mvc.Controllers
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-        public ProjectController(IProjectRepository projectRepository, IDomainEventDispatcher domainEventDispatcher, IUserRepository userRepository)
+        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
-            _domainEventDispatcher = domainEventDispatcher;
             _userRepository = userRepository;
         }
 
@@ -115,7 +113,7 @@ namespace AgileManagement.Mvc.Controllers
 
             foreach (var userId in model.UsersId)
             {
-                project.AddContributor(new Contributor(userId), _domainEventDispatcher);
+                //project.AddContributor(new Contributor(userId));
             }
 
             _projectRepository.Save();

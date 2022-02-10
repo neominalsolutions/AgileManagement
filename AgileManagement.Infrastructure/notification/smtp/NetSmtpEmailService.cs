@@ -17,7 +17,7 @@ namespace AgileManagement.Infrastructure
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587, // dünyayda mail için smptp 25 protu kullanılır. fakat artık neredeyse tüm dünyada 25 portu spama düştüğünde daha güvenli bir port olan 587 portu tecih edilir.
-                Credentials = new NetworkCredential("iea.agilemanagement@gmail.com", "Nbuysabah34@"),
+                Credentials = new NetworkCredential("ieanbuy.34@gmail.com", "istanbul.34"),
                 EnableSsl = true, // mail gönderilirken şifreleme uygulanmasın mı güvenlik için önemli
                
             };
@@ -30,7 +30,7 @@ namespace AgileManagement.Infrastructure
                 mailMessage.IsBodyHtml = true;
                 mailMessage.Subject = subject;
                 mailMessage.To.Add(to);
-                mailMessage.From = new MailAddress("iea.agilemanagement@gmail.com");
+                mailMessage.From = new MailAddress("ieanbuy.34@gmail.com");
                 mailMessage.Body = message;
 
 

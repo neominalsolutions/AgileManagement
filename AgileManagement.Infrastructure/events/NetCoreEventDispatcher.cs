@@ -32,7 +32,7 @@ namespace AgileManagement.Infrastructure
 
                     foreach (var handler in scope.ServiceProvider.GetServices<IDomainEventHandler<TDomainEvent>>())
                     {
-
+                        
                         handler.Handle(@event);
                     }
                 }

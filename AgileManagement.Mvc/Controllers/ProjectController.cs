@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace AgileManagement.Mvc.Controllers
 {
 
-
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _projectRepository;
@@ -33,6 +33,7 @@ namespace AgileManagement.Mvc.Controllers
 
         public IActionResult Index()
         {
+            
             return View();
         }
 
@@ -46,6 +47,28 @@ namespace AgileManagement.Mvc.Controllers
         public IActionResult AcceptRequest(string projectId, string userId, bool accepted)
         {
             // Accepted Rejected Contributor Status
+            // proje ile birlikte project contributor doldururuz ki projenin contributorlarına müdehale edelim
+            var project =  _projectRepository.GetQuery()
+                .Include(x=> x.Contributers)
+                .FirstOrDefault(x=> x.Id == projectId);
+
+            var user = _userRepository.Find(userId);
+
+            if(user != null && project != null)
+            {
+                // aynı projede aynı contributor olamaz
+               var contributor = project.Contributers.FirstOrDefault(x => x.UserId == user.Id);
+
+                if (accepted)
+                    contributor.ChangeProjectAccess(ContributorStatus.Accepted);
+                else
+                    contributor.ChangeProjectAccess(ContributorStatus.Rejected);
+     
+                _projectRepository.Save(); // project repo üzerinden contributor state değiştir.
+
+
+            }
+
             return View();
         }
 

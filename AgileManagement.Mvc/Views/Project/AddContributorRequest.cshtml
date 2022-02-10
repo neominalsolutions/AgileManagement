@@ -115,6 +115,28 @@
 
             console.log('projectId', projectId);
             console.log('contributors', contributors);
+            const usersId =  contributors.map(item => { return item.userId })
+            
+
+            const param = {
+                projectId,
+                usersId
+            }
+
+            console.log('param', param);
+
+            $.ajax({
+                method: 'Post',
+                url: '/Project/AddContributorRequest',
+                contentType:'application/json',
+                data: JSON.stringify(param), // data body den gönder demek
+                success: (response) => {
+                    alert('Başarılı')
+                },
+                error: (error) => {
+                    console.log('error', error);
+                }
+            })
 
 
         }

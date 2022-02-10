@@ -67,7 +67,7 @@ namespace AgileManagement.Domain
         /// Yanlışlıkla eklenen bir kullanıcıyı projeden geri aldık
         /// </summary>
         /// <param name="contributor"></param>
-        public void RemoveContributor(Contributor contributor, IDomainEventDispatcher domainEventDispatcher)
+        public void RemoveContributor(Contributor contributor)
         {
             contributors.Remove(contributor);
             DomainEvent.Raise(new ContributorRevokeAccessEvent(this.Name,contributor.UserId));

@@ -17,6 +17,7 @@ namespace AgileManagement.Domain
             services.AddScoped<IUserDomainService, UserDomainService>();
             // event handlerlar her çağrıldığında sistem tarafından yeni bir instance alınsın.
             services.AddTransient<IDomainEventHandler<UserCreatedEvent>, UserCreatedHandler>();
+            services.AddTransient<IDomainEventHandler<UserCreatedEvent>, UserCreatedNotifyHandler>();
             services.AddTransient<IDomainEventHandler<ContributorSendAccessRequestEvent>, ContributerSendAccessRequestHandler>();
             services.AddTransient<IDomainEventHandler<ContributorRevokeAccessEvent>, ContributorRevokeAccessEventHandler>();
         }

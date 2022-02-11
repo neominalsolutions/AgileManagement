@@ -37,6 +37,7 @@ namespace AgileManagement.Application
             {
                 var claims = new List<Claim>
                     {
+                        new Claim("UserId",user.Id),
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.GivenName,$"{user.FirstName} {user.MiddleName}{user.LastName}"),
                         new Claim(ClaimTypes.Email, user.Email)

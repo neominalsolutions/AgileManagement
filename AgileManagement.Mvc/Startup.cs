@@ -3,6 +3,7 @@ using AgileManagement.Core;
 using AgileManagement.Core.validation;
 using AgileManagement.Domain;
 using AgileManagement.Infrastructure;
+using AgileManagement.Mvc.Services;
 using AgileManagement.Persistence.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,10 +36,15 @@ namespace AgileManagement.Mvc
            
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpContextAccessor(); // IHttpContext Accessor
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDataProtection(); // Uygulamada dataProtection özelliði kullanacaðým.
 
             // Mvc uygulamasýnda automapper kullanacaðýmýzý söyledik
             services.AddAutoMapper(typeof(Startup));
+
+            // session bazlý oturum bazlý olacaðýnda singleton kesinlikle kullanmayýn. her oturum açan kiþi için deðiþecek bu sýnýf
+            // scope bazlý olmasýnýna da gerek yok. herhangi bir external iþlem yapmýyoruz.
+            services.AddTransient<AuthenticatedUser>();
 
             DomainModule.Load(services);
             InfrastructureModule.Load(services);

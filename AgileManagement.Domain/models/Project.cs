@@ -15,12 +15,16 @@ namespace AgileManagement.Domain
         private List<Contributor> contributors = new List<Contributor>();
         public IReadOnlyList<Contributor> Contributers => contributors;
 
+        public string CreatedBy { get; private set; }
 
-        public Project(string name, string description)
+
+
+        public Project(string name, string description, string createdBy)
         {
             Id = Guid.NewGuid().ToString();
             SetName(name);
             Description = description;
+            CreatedBy = createdBy; 
         }
 
         /// <summary>

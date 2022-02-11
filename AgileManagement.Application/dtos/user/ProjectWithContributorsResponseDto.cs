@@ -14,6 +14,8 @@ namespace AgileManagement.Application
         public string Email { get; set; }
         public string UserName { get; set; }
 
+        public string ProjectName { get; set; }
+
 
     }
 
@@ -22,6 +24,9 @@ namespace AgileManagement.Application
         public string ProjectId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+    
+
 
 
         /// <summary>

@@ -2,6 +2,7 @@
 using AgileManagement.Core;
 using AgileManagement.Domain;
 using AgileManagement.Mvc.Models;
+using AgileManagement.Mvc.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,15 @@ using System.Threading.Tasks;
 namespace AgileManagement.Mvc.Controllers
 {
 
-    [Authorize]
-    public class ProjectController : Controller
+  
+    public class ProjectController : AuthBaseController
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
         private readonly IProjectWithContributorsRequestService _projectWithContributorsRequestService;
         private readonly IMapper _mapper;
 
-        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository,IProjectWithContributorsRequestService projectWithContributorsRequestService, IMapper mapper)
+        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository, IProjectWithContributorsRequestService projectWithContributorsRequestService, IMapper mapper, AuthenticatedUser authenticatedUser):base(authenticatedUser)
         {
             _projectRepository = projectRepository;
             _userRepository = userRepository;
@@ -46,28 +47,7 @@ namespace AgileManagement.Mvc.Controllers
         /// <returns></returns>
         public IActionResult AcceptRequest(string projectId, string userId, bool accepted)
         {
-            // Accepted Rejected Contributor Status
-            // proje ile birlikte project contributor doldururuz ki projenin contributorlarına müdehale edelim
-            var project =  _projectRepository.GetQuery()
-                .Include(x=> x.Contributers)
-                .FirstOrDefault(x=> x.Id == projectId);
-
-            var user = _userRepository.Find(userId);
-
-            if(user != null && project != null)
-            {
-                // aynı projede aynı contributor olamaz
-               var contributor = project.Contributers.FirstOrDefault(x => x.UserId == user.Id);
-
-                if (accepted)
-                    contributor.ChangeProjectAccess(ContributorStatus.Accepted);
-                else
-                    contributor.ChangeProjectAccess(ContributorStatus.Rejected);
-     
-                _projectRepository.Save(); // project repo üzerinden contributor state değiştir.
-
-
-            }
+            
 
             return View();
         }
@@ -75,7 +55,15 @@ namespace AgileManagement.Mvc.Controllers
         public IActionResult List()
         {
 
-            var response =  _projectWithContributorsRequestService.OnProcess();
+            //var userId = User.Claims.First(x => x.Type == "UserId").Value;
+
+            var request = new ProjectWithContributorRequestDto
+            {
+                CreatedBy = authUser.UserId,
+                ProjectId = null
+            };
+
+            var response =  _projectWithContributorsRequestService.OnProcess(request);
 
             return View(response.Projects);
         }
@@ -90,7 +78,8 @@ namespace AgileManagement.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var project = new Project(name: projectCreateInputModel.Name, description: projectCreateInputModel.Description);
+                
+                var project = new Project(name: projectCreateInputModel.Name, description: projectCreateInputModel.Description, authUser.UserId);
 
                 _projectRepository.Add(project);
                 _projectRepository.Save();

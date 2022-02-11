@@ -9,6 +9,8 @@ namespace AgileManagement.Application
     public class ProjectWithContributorRequestDto
     {
         public string ProjectId { get; set; } = null;
+        public string CreatedBy { get; set; }
+
 
     }
 }

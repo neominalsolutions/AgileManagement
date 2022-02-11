@@ -26,6 +26,9 @@ namespace AgileManagement.Domain
         public string UserId { get; private set; }
         public int Status { get; private set; }
 
+        public Project Project { get; private set; }
+
+
         /// <summary>
         /// UserId ile hangi user hesabına bağlı olduğu bilgisini tutacağız. Buradan contribute ile alakalı email,firstname gibi değerlere erişebiliriz.
         /// </summary>
@@ -51,15 +54,25 @@ namespace AgileManagement.Domain
         /// <param name="contributorStatus"></param>
         public void ChangeProjectAccess(ContributorStatus contributorStatus)
         {
-            // bir daha contributor status waitingForRequest'e çekilemez.
-            if(ContributorStatus.WaitingForRequest != contributorStatus)
+          
+            // şuanki current status Accepted rejected yapılamaz
+            if ((int)ContributorStatus.WaitingForRequest == Status && contributorStatus != ContributorStatus.WaitingForRequest)
             {
                 this.Status = (int)contributorStatus;
             }
-       
         }
 
-        
+        /// <summary>
+        /// Sadece yanlış bir project access işleminde süreci sıfırlamak için kullanırız.
+        /// </summary>
+        public void ResetProjectAccess()
+        {
+            // projeden yetkili kişi proje için yeniden istekte bulundu.
+            this.Status = (int)ContributorStatus.WaitingForRequest;
+
+            // Yeniden projeye erişim için mail attık
+            DomainEvent.Raise(new ContributorSendAccessRequestEvent(this.Project.Name, this.Project.Id, this.UserId));
+        }
 
     }
 }

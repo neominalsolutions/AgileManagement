@@ -23,7 +23,8 @@ namespace AgileManagement.Application
         public ProjectWithContributorsResponseDto OnProcess(ProjectWithContributorRequestDto request =  null)
         {
 
-            var query = _projectRepository.GetQuery();
+
+            var query = _projectRepository.GetQuery().Where(x=> x.CreatedBy == request.CreatedBy);
 
             if (request != null && !string.IsNullOrEmpty(request.ProjectId))
             {
@@ -37,6 +38,7 @@ namespace AgileManagement.Application
                 Description = a.Description,
                 Contributors = a.Contributers.Select(x => new ContributorDto
                 {
+                    ProjectName = x.Project.Name,
                     UserId = x.UserId
                 }).ToList()
 
@@ -51,7 +53,8 @@ namespace AgileManagement.Application
                 {
                     Email = y.Email,
                     UserName = y.UserName,
-                    UserId = y.Id
+                    UserId = y.Id,
+                    ProjectName = project.Name
 
                 }).ToList();
             });

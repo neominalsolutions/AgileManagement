@@ -1,13 +1,14 @@
 ﻿
 @{
-    ViewData["Title"] = "CreateProject";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
 
 @model ProjectCreateInputModel
 
 
-<a asp-controller="Project" asp-action="Management" class="btn btn-link">Projelerim</a>
+<a asp-area="Admin"  asp-controller="Project" asp-action="Management" class="btn btn-link">Projelerim</a>
 
 @if (ViewBag.Message != null)
 {
@@ -27,5 +28,7 @@
 
     <button type="submit" class="btn btn-primary">Proje Oluştur</button>
 </form>
+
+
 
 

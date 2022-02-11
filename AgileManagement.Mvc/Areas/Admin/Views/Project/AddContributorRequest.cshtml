@@ -1,8 +1,9 @@
 ﻿
 @{
     ViewData["Title"] = "AddContributorRequest";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
 
 @model AgileManagement.Application.ProjectDto
 
@@ -57,16 +58,15 @@
 
                 </thead>
                 <tbody id="contributorTable">
-
                 </tbody>
                 <tfoot>
                     <tr>
-                       
+
                         <td colspan="2" style="text-align:center">
                             <button class="btn btn-success" onclick="SendContributorRequest('@Model.ProjectId')">Send Contributor Request</button>
                         </td>
                     </tr>
-                  
+
                 </tfoot>
             </table>
         </div>
@@ -116,7 +116,7 @@
             console.log('projectId', projectId);
             console.log('contributors', contributors);
             const usersId =  contributors.map(item => { return item.userId })
-            
+
 
             const param = {
                 projectId,
@@ -145,6 +145,8 @@
     </script>
 
 }
+
+
 
 
 

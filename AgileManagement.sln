@@ -44,7 +44,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgileManagement.Core", "Agi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFCore", "EFCore", "{F6E9E8D7-552C-4E2A-9EA0-DCF854D0F448}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileManagement.Persistence.EF", "AgileManagement.Persistence.EF\AgileManagement.Persistence.EF.csproj", "{BEAAE893-5B8D-4246-A7DF-7484FBCE101F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgileManagement.Persistence.EF", "AgileManagement.Persistence.EF\AgileManagement.Persistence.EF.csproj", "{BEAAE893-5B8D-4246-A7DF-7484FBCE101F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "document", "document", "{18198C4D-82DC-4F7F-B1F3-64135128F4B9}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Desktop\Agile Project Pages.rar = ..\..\..\Desktop\Agile Project Pages.rar
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Application.services
+namespace AgileManagement.Application
 {
     /// <summary>
     /// Contributor Proje gönderilen isteği kabul yada reddetmesini sağlar
     /// </summary>
-    public class ContributorAccessProjectApprovementService : IContributorProjectAccessApprovementService
+    public class ContributorProjectAccessApprovementService : IContributorProjectAccessApprovementService
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
 
-        public ContributorAccessProjectApprovementService(IProjectRepository projectRepository, IUserRepository userRepository)
+        public ContributorProjectAccessApprovementService(IProjectRepository projectRepository, IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
             _userRepository = userRepository;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AgileManagement.Application;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace AgileManagement.Application
             services.AddScoped<IUserLoginService, UserLoginService>();
 
             services.AddScoped<IProjectWithContributorsRequestService, ProjectWithContributorsRequestService>();
+            services.AddScoped<IContributorProjectAccessApprovementService, ContributorProjectAccessApprovementService>();
         }
     }
 }

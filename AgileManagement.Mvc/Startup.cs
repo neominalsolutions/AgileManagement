@@ -33,7 +33,7 @@ namespace AgileManagement.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpContextAccessor(); // IHttpContext Accessor
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -49,28 +49,28 @@ namespace AgileManagement.Mvc
             DomainModule.Load(services);
             InfrastructureModule.Load(services);
             ApplicationModule.Load(services);
-            EFModule.Load(services,Configuration);
+            EFModule.Load(services, Configuration);
 
 
             services.AddAuthentication("NormalScheme").AddCookie("NormalScheme", opt =>
              {
 
                  opt.Cookie.HttpOnly = false; // https bir cookie ile cookie https protocolü ile çalýþsýn
-                opt.Cookie.Name = "NormalCookie";
+                 opt.Cookie.Name = "NormalCookie";
                  opt.LoginPath = "/Account/Login";
                  opt.LogoutPath = "/Account/Logout";
                  opt.AccessDeniedPath = "/Account/AccessDenied"; // yetkiniz olmayan sayfalar.
-                opt.SlidingExpiration = true; // otomatik olarak cookie yenileme, süresini kaydýrarak expire time yeniden 30 gün sonrasýna atar.
-                                              // cookie expire olunca tekrar login olmamýz gerekiyor.
+                 opt.SlidingExpiration = true; // otomatik olarak cookie yenileme, süresini kaydýrarak expire time yeniden 30 gün sonrasýna atar.
+                                               // cookie expire olunca tekrar login olmamýz gerekiyor.
 
-            });
+             });
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
+
 
             if (env.IsDevelopment())
             {
@@ -92,6 +92,12 @@ namespace AgileManagement.Mvc
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapControllerRoute(
+            name: "admin",
+            pattern: "{area:exists}/{controller=Project}/{action=Management}/{id?}"
+          );
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

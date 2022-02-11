@@ -21,7 +21,7 @@ namespace AgileManagement.Mvc.Controllers
             _contributorProjectAccessApprovementService = contributorProjectAccessApprovementService;
         }
 
-        public IActionResult Index()
+        public IActionResult Home()
         {
             return View();
         }

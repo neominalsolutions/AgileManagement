@@ -1,23 +1,21 @@
 ﻿using AgileManagement.Application;
-using AgileManagement.Core;
 using AgileManagement.Domain;
-using AgileManagement.Mvc.Models;
+using AgileManagement.Mvc.Areas.Admin.Models;
+using AgileManagement.Mvc.Controllers;
 using AgileManagement.Mvc.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgileManagement.Mvc.Controllers
+namespace AgileManagement.Mvc.Areas.Admin.Controllers
 {
-
-  
-    public class AdminProjectController : AuthBaseController
+    [Area("Admin")]
+    // controller areas içerinde ise area olarak işaretleriz
+    public class ProjectController : AuthBaseController
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
@@ -25,7 +23,7 @@ namespace AgileManagement.Mvc.Controllers
         private readonly IMapper _mapper;
         private readonly IContributorProjectAccessApprovementService _contributorProjectAccessApprovementService;
 
-        public AdminProjectController(IProjectRepository projectRepository, IUserRepository userRepository, IProjectWithContributorsRequestService projectWithContributorsRequestService, IMapper mapper, AuthenticatedUser authenticatedUser, IContributorProjectAccessApprovementService contributorProjectAccessApprovementService) :base(authenticatedUser)
+        public ProjectController(IProjectRepository projectRepository, IUserRepository userRepository, IProjectWithContributorsRequestService projectWithContributorsRequestService, IMapper mapper, AuthenticatedUser authenticatedUser, IContributorProjectAccessApprovementService contributorProjectAccessApprovementService) : base(authenticatedUser)
         {
             _projectRepository = projectRepository;
             _userRepository = userRepository;
@@ -36,11 +34,11 @@ namespace AgileManagement.Mvc.Controllers
 
         public IActionResult Index()
         {
-            
+
             return View();
         }
 
-    
+
 
         public IActionResult Management()
         {
@@ -53,12 +51,12 @@ namespace AgileManagement.Mvc.Controllers
                 ProjectId = null
             };
 
-            var response =  _projectWithContributorsRequestService.OnProcess(request);
+            var response = _projectWithContributorsRequestService.OnProcess(request);
 
             return View(response.Projects);
         }
 
-        public IActionResult CreateProject()
+        public IActionResult Create()
         {
             return View();
         }
@@ -68,7 +66,7 @@ namespace AgileManagement.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 var project = new Project(name: projectCreateInputModel.Name, description: projectCreateInputModel.Description, authUser.UserId);
 
                 _projectRepository.Add(project);
@@ -97,7 +95,7 @@ namespace AgileManagement.Mvc.Controllers
                 Text = a.Email,
                 Value = a.Id.ToString()
             });
-         
+
 
             return View(response.Projects[0]);
 
@@ -119,9 +117,7 @@ namespace AgileManagement.Mvc.Controllers
 
 
             return Json("OK");
-           
-        }
 
-       
+        }
     }
 }

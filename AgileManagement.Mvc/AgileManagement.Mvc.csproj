@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -17,6 +17,10 @@
     <ProjectReference Include="..\AgileManagement.Core\AgileManagement.Core.csproj" />
     <ProjectReference Include="..\AgileManagement.Infrastructure\AgileManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\AgileManagement.Persistence.EF\AgileManagement.Persistence.EF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
 
 </Project>

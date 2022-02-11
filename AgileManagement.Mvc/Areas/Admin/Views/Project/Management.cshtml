@@ -1,8 +1,11 @@
 ﻿
 @{
-    ViewData["Title"] = "List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Management";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
+<h1>Management</h1>
+
 
 @model List<AgileManagement.Application.ProjectDto>
 
@@ -22,8 +25,8 @@
         <tr>
             <td>@item.Name</td>
             <td>@item.Description</td>
-            <td>@string.Join(',',item.Contributors.Select(a=> a.Email))</td>
-            <td><a asp-controller="Project" asp-action="AddContributorRequest" asp-route-projectId="@item.ProjectId">Add Contributor to Project</a></td>
+            <td>@string.Join(',', item.Contributors.Select(a => a.Email))</td>
+            <td><a asp-area="Admin" asp-controller="Project" asp-action="AddContributorRequest" asp-route-projectId="@item.ProjectId">Add Contributor to Project</a></td>
         </tr>
     }
-    </table>
+</table>

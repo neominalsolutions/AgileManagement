@@ -24,7 +24,12 @@ namespace AgileManagement.Application
         {
 
 
-            var query = _projectRepository.GetQuery().Where(x=> x.CreatedBy == request.CreatedBy);
+            var query = _projectRepository.GetQuery();
+
+            if (!string.IsNullOrEmpty(request.CreatedBy))
+            {
+               query =  query.Where(x => x.CreatedBy == request.CreatedBy);
+            }
 
             if (request != null && !string.IsNullOrEmpty(request.ProjectId))
             {

@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "ApprovedProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AgileManagement.Application.ProjectDto
+
+<h1>@Model.Name</h1>
+
+<p>Contributors</p>
+<ul>
+    @foreach (var item in Model.Contributors)
+    {
+        <li>@item.UserName</li>
+    }
+</ul>
+
+@* Sprintlerin listesi ve current olan sprint işaretli olsun *@
+@* sonra bu sprinte basınca ilgili task *@
+

@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "ContributorProjectApprove";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (ViewBag.Status)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+    <a asp-controller="Project" asp-action="ApprovedProject" asp-route-id="@ViewBag.ProjectId">Projeye Git</a>
+}
+else
+{
+    <div class="alert alert-danger">@ViewBag.Message</div>
+}

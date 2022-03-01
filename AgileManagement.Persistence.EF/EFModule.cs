@@ -28,6 +28,7 @@ namespace AgileManagement.Persistence.EF
 
             services.AddScoped<IUserRepository, EFUserRepository>();
             services.AddScoped<IProjectRepository, EFProjectRepository>();
+            services.AddScoped<IProductBackLogItemRepository, EFProductBacklogItemRepository>();
             // best practice olarak db context uygyulaması appsettings dosyasından bilgileri conectionstrings node dan alırız.
         }
     }

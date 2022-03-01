@@ -1,4 +1,5 @@
 ﻿using AgileManagement.Application;
+using AgileManagement.Application.services.backlog;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace AgileManagement.Application
 
             services.AddScoped<IProjectWithContributorsRequestService, ProjectWithContributorsRequestService>();
             services.AddScoped<IContributorProjectAccessApprovementService, ContributorProjectAccessApprovementService>();
+
+            services.AddScoped<ProductBackLogItemTaskCreateService>();
         }
     }
 }

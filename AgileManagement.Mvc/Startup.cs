@@ -44,7 +44,7 @@ namespace AgileManagement.Mvc
 
             // session bazlý oturum bazlý olacaðýnda singleton kesinlikle kullanmayýn. her oturum açan kiþi için deðiþecek bu sýnýf
             // scope bazlý olmasýnýna da gerek yok. herhangi bir external iþlem yapmýyoruz.
-            services.AddTransient<AuthenticatedUser>();
+            services.AddSingleton<AuthenticatedUser>();
 
             DomainModule.Load(services);
             InfrastructureModule.Load(services);

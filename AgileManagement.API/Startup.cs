@@ -1,3 +1,7 @@
+using AgileManagement.Application;
+using AgileManagement.Domain;
+using AgileManagement.Infrastructure;
+using AgileManagement.Persistence.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +32,15 @@ namespace AgileManagement.API
         {
 
             services.AddControllers();
+            services.AddHttpContextAccessor();
+            services.AddDataProtection();
+
+
+            DomainModule.Load(services);
+            InfrastructureModule.Load(services);
+            ApplicationModule.Load(services);
+            EFModule.Load(services, Configuration);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AgileManagement.API", Version = "v1" });

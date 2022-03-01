@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AgileManagement.Application\AgileManagement.Application.csproj" />
+    <ProjectReference Include="..\AgileManagement.Infrastructure\AgileManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\AgileManagement.Persistence.EF\AgileManagement.Persistence.EF.csproj" />
   </ItemGroup>
 
 </Project>
